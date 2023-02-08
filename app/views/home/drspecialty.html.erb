@@ -1,0 +1,61 @@
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; margin-bottom:60px; margin-top: 40px;}
+</style>
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+<div id='map'></div>
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoibWFwaW50ZXJhY3RpdmUiLCJhIjoidy1tV1FqVSJ9.3eD0WqCYIJufsHE3SicxeA';
+var map = L.mapbox.map('map', 'mapinteractive.k74pip2c');
+
+ map.addControl(L.mapbox.legendControl());
+     map.legendControl.addLegend("<h2>Surgeon specialty</h2>")
+
+// omnivore will AJAX-request this file behind the scenes and parse it:
+// note that there are considerations:
+// - The file must either be on the same domain as the page that requests it,
+//   or both the server it is requested from and the user's browser must
+//   support CORS.
+
+var runLayer = omnivore.csv('/byspecialty')
+    .on('ready', function() {
+        map.fitBounds(runLayer.getBounds());
+        
+        // After the 'ready' event fires, the GeoJSON contents are accessible
+        // and you can iterate through layers to bind custom popups.
+        runLayer.eachLayer(function(layer) {
+            console.log(layer);
+            var pct = function (total, part) {
+
+                t = parseInt(total) || 1
+                p = parseInt(part) || 0
+                pt =  Math.round( p * 100 / t , 2)
+                 return "   (" + pt.toString() + "%)" }
+            // See the `.bindPopup` documentation for full details. This
+            // dataset has a property called `name`: your dataset might not,
+            // so inspect it and customize to taste.
+             html = "<b>"+ layer.feature.properties.country + "," + layer.feature.properties.nodocs + " surgeons</b>"
++ "<br/>Pediatrics:" + layer.feature.properties.Pediatrics  + pct(layer.feature.properties.nodocs,  layer.feature.properties.Pediatrics)
++ "<br/>General:" + layer.feature.properties.General  + pct(layer.feature.properties.nodocs,  layer.feature.properties.General)
+ + "<br/>Orthopaedics:" + layer.feature.properties.Orthopaedics + pct(layer.feature.properties.nodocs,  layer.feature.properties.General)
++ "<br/>Urology:" + layer.feature.properties.Urology   + pct(layer.feature.properties.nodocs,  layer.feature.properties.Urology) 
+                       + "<br/>Plastics:" + layer.feature.properties.Plastics  + pct(layer.feature.properties.nodocs,  layer.feature.properties.Plastics) 
+                       + "<br/>(Cardio)thoracic:" + layer.feature.properties['(Cardio)thoracic'] + pct(layer.feature.properties.nodocs,  layer.feature.properties['(Cardio)thoracic']) 
+                       + "<br/>Colorectal:" + layer.feature.properties.Colorectal + pct(layer.feature.properties.nodocs,  layer.feature.properties.Colorectal)  
+                       + "<br/>Cardiovascular:" + layer.feature.properties.Cardiovascular + pct(layer.feature.properties.nodocs,  layer.feature.properties.Cardiovascular)
+                       + "<br/>ENT:" + layer.feature.properties.ENT  + pct(layer.feature.properties.nodocs,  layer.feature.properties.ENT)
+                       + "<br/>Oral and Maxillofacial:" + layer.feature.properties['Oral and Maxillofacial'] + pct(layer.feature.properties.nodocs,  layer.feature.properties['Oral and Maxillofacial'])
+                       + "<br/>Opthalmic:" + layer.feature.properties.Opthalmic + pct(layer.feature.properties.nodocs,  layer.feature.properties.Opthalmic)
+                       + "<br/>OB/GYN:" + layer.feature.properties['OB/GYN'] + pct(layer.feature.properties.nodocs,  layer.feature.properties['OB/GYN'])
+                       + "<br/>Neurosurgery:" + layer.feature.properties.Neurosurgery + pct(layer.feature.properties.nodocs,  layer.feature.properties.Neurosurgery)
+
+            layer.bindPopup(html);
+        });
+    })
+    .addTo(map);
+     runLayer.on('mouseover', function(e) { e.layer.openPopup(); });
+     runLayer.on('mouseout', function(e) {   e.layer.closePopup();});
+   
+</script>

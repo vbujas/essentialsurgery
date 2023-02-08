@@ -1,0 +1,1831 @@
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-minimap/v1.0.0/Control.MiniMap.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-minimap/v1.0.0/Control.MiniMap.css' rel='stylesheet' />
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.1/mapbox-gl.css' rel='stylesheet' />
+<div id='map'></div>
+<div id='district' style="local-map-tooltip"></div>
+
+<!-- Filter for Global Density -->
+      <div id="checkboxes-density" class="checkboxes-density">
+    <div class="col-md-12  col-sm-12 col-xs-12 nopadding" style="margin-left:-4px; margin-top:-6px;" align="left">
+      <div style="z-index:10000;height:22px; line-height:22px; vertical-align:middle; " align="left"> 
+  <div class="shrink-checkboxes the-x">
+       ×
+       </div>
+       <div style="font-size:13px; font-weight:800; vertical-align:middle; position:absolute; left:26px;"> Filter By Specialty </div>
+      </div>
+      </div>
+
+       <div class="col-md-12  col-sm-12 col-xs-12 nopadding">
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="global-surgeons" name="stoggle" checked type="checkbox">
+       <label class="hover" for="neurosurgery">Surgeons</label>
+      </div>      
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="global-obstetricians" name="stoggle" checked type="checkbox">
+       <label class="hover" for="cardiothoracic">Obstetricians</label>
+      </div>
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="global-anesthesiologists" name="stoggle" checked type="checkbox">
+       <label class="hover" for="cardiovascular">Anesthesiologists</label>
+      </div>
+       </div>
+      </div>
+<!-- side bar -->
+
+<div id="sidebar-two" align="center"> 
+      <div class="verticalmenu-item surgeonsitem">  
+      
+      <img src="images/surgeon.png" class="surgeonimage toggleicon tgl" style="background-color:#4787BD" />
+      <div class="doctors" style="display:none;">&nbsp; </div>     
+      <div class="specsubmenu" style="display:none;">
+      <i class="fa fa-chevron-left"></i>
+      </div>
+      <div class="checkboxes">
+    <div class="col-md-12  col-sm-12 col-xs-12 nopadding" style="margin-left:-4px; margin-top:-6px;" align="left">
+      <div style="z-index:10000;height:22px; line-height:22px; vertical-align:middle; " align="left"> 
+  <div class="shrink-checkboxes the-x">
+       ×
+       </div>
+       <div style="font-size:13px; font-weight:800; vertical-align:middle; position:absolute; left:26px;"> Filter By Specialty </div>
+      </div>
+      </div>
+      <div class="col-md-6  col-sm-6 col-xs-6 nopadding" >
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="general" name="stoggle" checked type="checkbox">
+       <label class="hover" for="general">General</label>
+      </div>
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="plastic" name="stoggle" checked type="checkbox">
+      <label class="hover" for="plastic">Plastic</label>
+      </div>
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="pediatrics" name="stoggle" checked type="checkbox">
+       <label class="hover" for="pediatrics">Pediatrics</label>
+      </div>   
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="orthopaedics" name="stoggle" checked type="checkbox">
+       <label class="hover" for="orthopaedics">Orthopaedics</label>
+      </div>
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="ENT" checked name="stoggle" type="checkbox">  
+       <label class="hover" for="ENT">ENT</label>
+      </div>
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="colorectal" name="stoggle" checked type="checkbox">
+       <label class="hover" for="colorectal">Colorectal</label>
+      </div>
+      
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="ophtalmic" name="stoggle" checked type="checkbox"> 
+       <label class="hover" for="ophtalmic">Ophtalmic</label>
+      </div>
+      </div>
+       <div class="col-md-6  col-sm-6 col-xs-6 nopadding">
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="neurosurgery" name="stoggle" checked type="checkbox">
+       <label class="hover" for="neurosurgery">Neurosurgery</label>
+      </div>
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="urology" name="stoggle" checked type="checkbox">
+       <label class="hover" for="urology">Urology</label>
+      </div>
+       
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="cardiothoracic" name="stoggle" checked type="checkbox">
+       <label class="hover" for="cardiothoracic">Cardiothoracic/Cardiovascular</label>
+      </div>
+ 
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="oralandmaxillofacial" name="stoggle" checked type="checkbox">
+       <label class="hover" for="oralandmaxillofacial">Oral</label>
+      </div>
+      
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="obgyn" name="stoggle" checked type="checkbox">
+       <label class="hover" for="obgyn">OB/GYN</label>
+      </div>
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="unknown" name="stoggle" checked type="checkbox">  
+       <label class="hover" for="unknown">Unknown</label>
+      </div>
+       </div>
+      </div>
+    </div>        
+      <div class="verticalmenu-item hospitalsitem">
+
+      <img src="images/hospital.png" class="hospitalimage toggleicon tgl" style="background-color:#B82929" />
+        <div class="hospitals" style="display:none;">&nbsp; </div> 
+        <div class="specsubmenu-hospitals">
+      <i class="fa fa-chevron-left"></i>
+      </div>
+
+      <div class="checkboxes-hospitals" style="display:none;">
+<div class="col-md-12  col-sm-12 col-xs-12 nopadding" style="margin-left:-4px; margin-top:-6px;" align="left">
+      <div style=" z-index:10000; height:22px; line-height:22px; vertical-align:middle;" align="left"  > 
+  <div class="shrink-checkboxes-hospitals the-x">
+         ×
+       </div>
+       <div style="font-size:13px; font-weight:800;vertical-align:middle;  position:absolute; left:26px;"> Filter By Hospital Type </div>
+      </div>
+      </div>
+      <div class="col-md-12  col-sm-12 col-xs-12 nopadding">
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="training" class="hospcbx" name="stoggle" checked type="checkbox">
+       <label class="hover" for="training">Training Center</label>
+      </div>   
+      <div class="col-md-12 col-sm-12 padding5" align="left">
+       <input id="non-training" class="hospcbx" name="stoggle" checked type="checkbox"> 
+       <label class="hover" for="non-training">Non-Training Center</label>
+      </div>
+      </div>
+        </div>
+               </div>
+             
+</div>
+<!-- /side bar -->
+
+<div id="toggleswitches">
+  <input type="checkbox" data-size="normal" style="display:none"    name="gender-toggle" checked> 
+  <input type="checkbox"  data-size="normal" style="display:none"  name="hospitals-toggle" checked> 
+  <input type="checkbox"  data-size="normal" style="display:none"  name="density-toggle" checked> 
+  <input type="checkbox"  data-size="normal" style="display:none"  name="map-toggle" checked>
+</div>
+  
+<script>
+var hospitalsstate = false;
+var genderstate = false;
+var densitystate = false;
+var maptypestate = true;
+
+var totalDocsPerDistrictTrigerred = false;
+var totalHospitalsTrigerred = false;
+var totalDocsPerCountryTrigerred = false;
+var totalDocsPerCountryTrigerrable = false;
+var totalDocsPerDistrictTrigerrable = false;
+var totalHospitalsTrigerrable =false;
+var organisationsTrigerrable = false; 
+var countryStats = null
+var countryNames = null
+var opts = {
+lines: 13, // The number of lines to draw
+length: 10, // The length of each line
+width: 5, // The line thickness
+radius: 15, // The radius of the inner circle
+corners: 1, // Corner roundness (0..1)
+rotate: 0, // The rotation offset
+color: '#FFF', // #rgb or #rrggbb
+speed: 1, // Rounds per second
+trail: 60, // Afterglow percentage
+shadow: false, // Whether to render a shadow
+hwaccel: false, // Whether to use hardware acceleration
+className: 'spinner', // The CSS class to assign to the spinner
+zIndex: 2e9, // The z-index (defaults to 2000000000)
+top: 'auto', // Top position relative to parent in px
+left: 'auto' // Left position relative to parent in px
+};
+var target = document.createElement("div");
+document.body.appendChild(target);
+
+
+
+colors = ['#5adb04','#d6ff01','#ffff01','#ffdd00','#fe9900','#fe5900','#fd0002'];
+ 
+ $('.shrink-checkboxes').on('click', function(){
+ $(".checkboxes").fadeOut()  
+ })
+
+  $('.shrink-checkboxes-hospitals').on('click', function(){
+  $(".checkboxes-hospitals").fadeOut()  
+ })
+
+ $('.specsubmenu').on('click', function(){
+  $('.checkboxes').fadeIn();
+ })
+
+ $('.specsubmenu-hospitals').on('click', function(){ 
+  $('.checkboxes-hospitals').fadeIn();
+   })
+
+ $("[name='map-toggle']").bootstrapSwitch({
+  animation:true,
+  onText: 'On',
+  offText: 'Off',
+  onColor: 'warning',
+  offColor: 'danger',
+  labelText: 'Heat',
+  state: true
+ });
+ 
+  $("[name='gender-toggle']").bootstrapSwitch({
+  animation:true,
+  onText: 'On',
+  offText: 'Off',
+  onColor: 'warning',
+  offColor: 'danger',
+  labelText: 'Gender',
+  state: false
+ });
+
+ $("[name='hospitals-toggle']").bootstrapSwitch({
+  animation:true,
+  onText: 'On',
+  offText: 'Off',
+  onColor: 'warning',
+  offColor: 'danger',
+  labelText: 'Hospitals',
+  state: false
+ });
+
+  $("[name='density-toggle']").bootstrapSwitch({
+  animation:true,
+  onText: 'On',
+  offText: 'Off',
+  onColor: 'warning',
+  offColor: 'danger',
+  labelText: 'Density',
+  state: false
+ });
+
+ $('.tgl').on('click', function() {
+      $(district).css('display', 'none')
+    
+  if($(this).hasClass('surgeonimage'))
+ {    
+  console.log('tgl click zoom is ' + zoom)
+    $(".shrink-checkboxes-hospitals").trigger('click')
+ if($(".doctors").is(":visible")) {
+      totalDocsPerCountryTrigerred = false;
+      totalDocsPerDistrictTrigerred = false;
+      totalDocsPerCountryTrigerrable = true;
+      totalDocsPerDistrictTrigerrable = true;
+      densitystate = false;
+     $(".doctors").hide();
+     $(".specsubmenu").hide();
+     $(".checkboxes").hide();  
+}
+ else { 
+ $(".doctors").show();
+ $(".specsubmenu").show();
+ $(".hospitals").hide();
+ $('.specsubmenu-hospitals').hide();
+      densitystate = true;
+  totalDocsPerCountryTrigerrable = true;
+  totalDocsPerDistrictTrigerrable = true;
+ }
+
+   console.log('dansitystate is ' + densitystate + ' zoom is ' + zoom);
+  $("[name='density-toggle']").bootstrapSwitch('toggleState', false, densitystate )    
+ }
+  if($(this).hasClass('hospitalimage')) 
+ {  
+ 
+    $(".shrink-checkboxes").trigger('click')
+if($(".hospitals").is(":visible")) {
+    totalHospitalsTrigerred = false;
+    totalDocsPerDistrictTrigerred = false;    
+    totalHospitalsTrigerrable = false;
+    organisationsTrigerrable = false; 
+     $(".hospitals").hide();
+     $(".specsubmenu-hospitals").hide();
+     $(".checkboxes-hospitals").hide();  
+      }
+ else { 
+  $(".hospitals").show();
+  $(".specsubmenu-hospitals").show();
+  $(".doctors").hide();
+  $('.specsubmenu').hide();
+  totalHospitalsTrigerrable = true;
+  organisationsTrigerrable = true; 
+ }
+ 
+   $("[name='hospitals-toggle']").bootstrapSwitch('toggleState', false, !hospitalsstate)
+       
+ }
+  if($(this).hasClass('icon-i-care-staff-area')) 
+ {  
+   $("[name='gender-toggle']").bootstrapSwitch('toggleState', false, !genderstate)
+ }
+
+  if($(this).hasClass('fa-globe')) 
+ { 
+   $("[name='map-toggle']").bootstrapSwitch('toggleState', false, !maptypestate)
+   $('.fa-globe').toggleClass('toggleiconoff', !maptypestate)
+   $('.fa-globe').toggleClass('toggleicon', maptypestate)
+ }
+
+  $('.icon-i-care-staff-area').toggleClass('toggleiconoff', !genderstate)
+  $('.icon-i-care-staff-area').toggleClass('toggleicon', genderstate)
+ }) 
+ 
+ var orgTrigerred = false;
+ var json ;
+ var mydistrict = [];
+ tempobjectid = 0;
+ var runLayer
+ var featureG = null;
+ var featureOverlay = null;
+ var featureGtotalDocsPerDistrictOverlay = null;
+ var source = blankmap; // 'mapbox.emerald';
+ var center = null;
+ var zoom = 4;
+ var map = null;
+L.mapbox.accessToken = 'pk.eyJ1IjoiaGVhdGhlcmphc3BlciIsImEiOiJTRFU1NUlFIn0.aYfcMiKyf03aWG5v-xjCQg';
+
+ $("[name='map-toggle']").on('switchChange.bootstrapSwitch', function(ev, state) { 
+   maptypestate = state;
+  if (state == false  ) {
+   // alert('changing map source before (heat false)  ' + source)
+        center = map.getCenter()          
+        map.remove();
+        source = blankmap // mapbox.emerald
+    //  alert('changing map source after >>>>' + source)
+        map = L.mapbox.map('map',  source, { zoomControl: false,  doubleClickZoom: false}).setView(center, zoom)
+ 
+  new  L.Control.Zoom( {position: 'bottomright' } ).addTo(map); 
+          setZoom(map)
+          orgTrigerred = false;
+          totalDocsPerDistrictTrigerred = false;
+     applyMaplogic() 
+        }
+
+   else { 
+    //   alert('changing map source before (heat true) ' + source)
+        center = map.getCenter()            
+        map.remove();
+        if(genderstate) source = gendermap
+        else source =  blankmap;
+    //   alert('changing map source after >>>>' + source)
+        map = L.mapbox.map('map',  source, { zoomControl: false, doubleClickZoom: false}).setView(center, zoom)
+ 
+     new  L.Control.Zoom( {position: 'bottomright' } ).addTo(map);         
+           setZoom(map);
+         //   map.doubleClickZoom.disable();  
+        //  map.touchZoom.disable();
+           orgTrigerred = false;
+           totalDocsPerDistrictTrigerred = false;  
+       applyMaplogic()
+   }
+  })
+
+ function applyMaplogic(run) { 
+
+ if(source == blankmap) { 
+
+     if (featureG) map.removeLayer(featureG)
+     if (featureGtotalDocsPerDistrictOverlay) map.removeLayer(featureGtotalDocsPerDistrictOverlay)
+     if (featureOverlay) map.removeLayer(featureOverlay)
+
+    map.gridLayer.off();
+    map.gridLayer.on('click',function(o) { 
+   
+      if(o.data) { 
+        if(o.data.ngos < 1) return;
+     var spinner = new Spinner(opts).spin(target);   
+  var overlay = iosOverlay({
+   text: "Loading",
+   spinner: spinner });  
+   
+      $.ajax({
+     url: "/getngosforcountry", 
+     type: 'GET',
+     contentType: "application/json; charset=utf-8",
+     data: "country_code=" +  o.data.ADM0_A3,
+    success: function(data) {  
+      $('#org-list-title').find('span').html('Organization List for ' + o.data.ADMIN )
+     
+      h=''
+      for(i=0;i<data.length;i++) { 
+        var ordno = i+1
+      h+='<div id="ngo_'+data[i][0]+'" data-org="'+data[i][0]+'" data-href="'+data[i][2]+'" class="col-md-12 col-sm-12 col-xs-12 org-list-item nopadding">'
+      h+= '<div class="col-md-6 col-sm-6 col-xs-6 ngo-name  nopadding" align="left">'
+      h+= data[i][1] +'</div>' 
+      h+='<div class="col-md-4 col-sm-4 col-xs-4 ngo-website  nopadding" align="left">'
+    h+='<div class="col-md-1 col-sm-1 col-xs-1 nopadding chevron ngos-chevron">'
+      h+='<img src="images/rarr.png" class="rightarrow-ngos nodisplay"/></div>'
+      h+= '<a>'+ data[i][2] +'</a></div></div>' 
+      }
+     
+      $('#orgs-list-for-country-body').html(h)
+      if(data.length > 0)  $('#ngos-bycountry-modal').modal('show');
+      // console.log(data);  
+       overlay.hide()
+      
+
+    }, 
+    error:  function(err) {  console.log(err)
+      overlay.hide()
+     }
+})
+      }  
+    });
+     }
+
+
+  if(source == ngosmap) {  
+     
+     if (featureG) map.removeLayer(featureG)
+     if (featureGtotalDocsPerDistrictOverlay) map.removeLayer(featureGtotalDocsPerDistrictOverlay)
+     if (featureOverlay) map.removeLayer(featureOverlay)
+      
+    map.gridLayer.off();
+ featureG =  L.featureGroup().addTo(map);
+    displaySurgeonsDensity(featureG) 
+    map.gridLayer.on('click', function(o) { 
+  
+      if(o.data) { 
+        if(o.data.surgperhundredk < 1) return;
+     
+      }  
+    });
+  }   
+
+  console.log( ' applying map logic' + ' densitystate is' + densitystate + ' hospitalstate is ' + hospitalsstate + 'zoom is ' + zoom)
+
+  if (!zoom) zoom = map.getZoom()
+  var dummy = 0
+   zoom > 10 ? zoom = 10 : dummy = 1
+              if(hospitalsstate) { 
+   if(zoom <=4) 
+      {   if(!totalHospitalsTrigerred && totalHospitalsTrigerrable)  totalHospitalsPerCountry(); 
+        if (source == densitymap)   totalDocsOverlay()
+          orgTrigerred = false;     
+        }
+  if( zoom >=5 && zoom<8) 
+      {   
+       if(!orgTrigerred && organisationsTrigerrable ) { 
+        organizations(); }
+           totalHospitalsTrigerred = false
+      if (source == densitymap)   totalDocsPerDistrictOverlay()
+
+         }
+      else if(zoom >=8) 
+         {   docsPerOrganization(); 
+             orgTrigerred = false;   
+      if (source == densitymap)   totalDocsPerDistrictOverlay()
+
+        }
+   else {  
+     if(typeof(runLayer) == 'object')   {
+       console.log('else')   
+     }
+   }   
+       } // end hospitalstate
+
+       if(genderstate) { 
+        if(zoom <=4) 
+      {  gender()  }
+         else  if(genderstate) { 
+        if(zoom >=5) 
+      {  genderbydistrict()   }
+  }
+      
+   else {  
+     if(typeof(runLayer) == 'object')   {
+       console.log('d')  
+     }
+   }
+       } // end genderstate 
+
+
+       if(densitystate) { 
+          console.log('entering densitystate.... zoom is ' + zoom)
+     if(zoom >=1 && zoom <=4) 
+      {   
+        console.log('zoom is ' + zoom)
+  if(!totalDocsPerCountryTrigerred && totalDocsPerCountryTrigerrable) totalDocsPerCountry();
+  if(totalDocsPerCountryTrigerred && run) {  totalDocsPerCountry();  }
+          
+          totalDocsPerDistrictTrigerred = false
+           
+   if (source == densitymap)   totalDocsOverlay()
+        }
+else if(zoom >=5) 
+        {  
+        console.log('zoom is ' + zoom + 'totalDocsPerDistrictTrigerred is' + totalDocsPerDistrictTrigerred + ' totalDocsPerDistrictTrigerrable is' + totalDocsPerDistrictTrigerrable )
+          if(!totalDocsPerDistrictTrigerred && totalDocsPerDistrictTrigerrable) { totalDocsPerDistrict();
+           }
+             
+             if(totalDocsPerDistrictTrigerred && run) totalDocsPerDistrict();
+            
+            if (source == densitymap)   totalDocsPerDistrictOverlay()
+           totalDocsPerCountryTrigerred = false;   
+          console.log('totalDocsPerDistrict()')
+            }
+     
+   else {  
+     if(typeof(runLayer) == 'object')   {
+     // console.log('map.removeLayer(featureGroup)')
+     //  map.removeLayer(featureGroup);   
+     }
+   }
+       }
+
+ } // end applymaplogic
+/*  ###########################END TOGGLE ON EVENT ######################## */
+ $("[name='hospitals-toggle']").on('switchChange.bootstrapSwitch', function(ev, state) {
+  hospitalsstate = state;
+  orgTrigerred = false;
+ 
+  if (state == false) { 
+   console.log(state + ' is false (hospitals)')
+    map.removeLayer(featureG); 
+ } 
+  
+  if (state == true ) {
+  totalDocsPerDistrictTrigerred = false;
+  totalDocsPerCountryTrigerred = false;    
+       center = map.getCenter()        
+        map.remove();     
+
+    if(source ==gendermap) {   
+    
+      if(zoom <=4) { map.removeLayer(featureG);   gender(); }
+     else   { map.removeLayer(featureG);   genderbydistrict(); }
+
+    }    
+     //   source = 'heatherjasper.rge6d2t9'
+   if(genderstate) { $("[name='gender-toggle']").bootstrapSwitch('state', false, true) 
+    
+     genderstate = false;
+ }
+   if(densitystate) {$("[name='density-toggle']").bootstrapSwitch('state', false, true)
+      densitystate = false;
+    } 
+
+ map = L.mapbox.map('map',  source, { zoomControl:false,  doubleClickZoom: false}).setView(center, zoom)
+       //       new L.Control.MiniMap(L.mapbox.tileLayer(source), {position: 'topright' })
+       //     .addTo(map);
+             new  L.Control.Zoom( {position: 'bottomright' } ).addTo(map); 
+              setZoom(map)
+             //  map.touchZoom.disable();
+             //     map.doubleClickZoom.disable();  
+               if (map.tap) map.tap.disable();
+
+              applyMaplogic()   
+    }   
+     })
+  
+ /*  ########################END TOGGLE ON EVENT #################### */ 
+ $("[name='density-toggle']").on('switchChange.bootstrapSwitch', function(ev, stte) {
+  totalDocsPerDistrictTrigerred = false
+     console.log('density ---->'+ densitystate + ' is  ' + densitystate + ' zoom is' + zoom)
+   
+ if (densitystate == false) { 
+   if(zoom <=4) map.removeLayer(featureG); 
+   else  map.removeLayer(featureG); 
+ } 
+
+  if (densitystate == true) {
+       center = map.getCenter()
+        totalHospitalsTrigerred = false; 
+        orgTrigerred = false;
+        map.remove();
+
+    if (source== gendermap) {    
+          
+     if(zoom <=4) {   
+      map.removeLayer(featureG);   totalDocsOverlay(); }
+     else   {
+      map.removeLayer(featureG);   totalDocsPerDistrictOverlay(); }
+        }  
+
+   if(genderstate) { $("[name='gender-toggle']").bootstrapSwitch('state', false, true) 
+    genderstate = false;
+ }
+   if(hospitalsstate) { $("[name='hospitals-toggle']").bootstrapSwitch('state', false, true) 
+    hospitalsstate = false;
+    }
+       console.log('source  is ' + source + ' totalDocsPerDistrictTrigerrable is ' + totalDocsPerDistrictTrigerrable + ' totalDocsPerCountryTrigerrable is' + totalDocsPerCountryTrigerrable);
+       map = L.mapbox.map('map',  source, { zoomControl:false, doubleClickZoom: false }).setView(center, zoom)
+ 
+
+       new  L.Control.Zoom( {position: 'bottomright' } ).addTo(map); 
+            setZoom(map)
+          //   map.touchZoom.disable();
+          //   map.doubleClickZoom.disable();  
+         if (map.tap) map.tap.disable();
+
+            applyMaplogic();
+      } 
+  }) 
+
+/*  ######################END TOGGLE ON EVENT ######################## */
+ $("[name='gender-toggle']").on('switchChange.bootstrapSwitch', function(ev, state) {
+  genderstate = state;
+  totalDocsPerDistrictTrigerred = false;
+  orgTrigerred = false;
+
+   if(hospitalsstate) {
+  $("[name='hospitals-toggle']").bootstrapSwitch('state', false, true); 
+  hospitalsstate = false;
+} 
+if(densitystate) { $("[name='density-toggle']").bootstrapSwitch('state', false, true);
+  densitystate = false; 
+}
+  if (state == false && source !=densitymap ) {
+        center = map.getCenter()
+        map.remove();
+        source = blankmap
+        map = L.mapbox.map('map',  source, { zoomControl: false,  doubleClickZoom: false}).setView(center, zoom)
+        //        new L.Control.MiniMap(L.mapbox.tileLayer(source), {position: 'topright' })
+         //   .addTo(map);
+             new  L.Control.Zoom( {position: 'bottomright' } ).addTo(map); 
+             setZoom(map)
+            //    map.doubleClickZoom.disable();  
+         if (map.tap) map.tap.disable();
+
+             applyMaplogic();
+ 
+        }
+
+  if (state == true && source != gendermap ) {             
+          center = map.getCenter()
+           source = gendermap
+        map.remove();
+     map = L.mapbox.map('map',  source, {zoomControl:false,  doubleClickZoom: false }).setView(center, zoom);
+   //   new L.Control.MiniMap(L.mapbox.tileLayer(source), {position: 'topright' })
+    //        .addTo(map); 
+         new  L.Control.Zoom( {position: 'bottomright' } ).addTo(map);     
+           setZoom(map) 
+          // map.touchZoom.disable();
+          // map.doubleClickZoom.disable();  
+           if (map.tap) map.tap.disable();
+           applyMaplogic();   
+   }; 
+  console.log(densitystate)
+  })
+
+// mapbox.emerald
+// this is the first map that is loaded
+source = blankmap;
+    $('#sidebar-two').hide();
+var map = L.mapbox.map('map',  source, { zoomControl: false ,  doubleClickZoom: false,
+   maxZoom: 12,
+   minZoom: 1 }).setView([-1.95,33.86], zoom).on('ready', function() {
+      map.maxZoom = 12;
+ 
+    });
+
+ // new L.Control.MiniMap(L.mapbox.tileLayer(source), {position: 'topright' } ).addTo(map); 
+new  L.Control.Zoom( {position: 'bottomright' } ).addTo(map); 
+ //  map.doubleClickZoom.disable();  
+ //  map.touchZoom.enable();
+ if (map.tap) map.tap.disable();
+
+//if(densitystate && zoom < 5 ) totalDocsPerCountry()
+ setZoom(map);
+ 
+// ***************************************************************//
+// this is only if  first map is density layer if no comment this //
+//****************************************************************//
+    densitystate = false
+    hospitalsstate = true
+    genderstate = false   
+     $('#checkboxes-density').hide();
+     $('#sidebar-two').hide();
+   //  $('#sidebar-two').qtip('toggle'); 
+//***********************************************************// 
+// end if first map is  density layer/////////////////////////
+//***********************************************************//
+applyMaplogic();
+    map.on('click', function (e) {
+    var tooltip = new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(ISO3)
+        .addTo(map);});
+ 
+ $('#checkboxes-density').hide();
+
+
+
+function setZoom(map) {        
+          map.on('zoomend', function(e) {  
+          $(district).css('display', 'none')      
+          zoom = e.target._animateToZoom;
+           applyMaplogic();
+           map.doubleClickZoom.disable();        
+              })
+        }
+
+var district = document.getElementById('district');
+var featureLayer = L.mapbox.featureLayer()
+    .addTo(map);
+map.featureLayer.on('ready', function() {
+var features = map.featureLayer.getGeoJSON().features;
+if(densitystate)  totalDocsPerCountry ()  
+});
+  
+   function totalHospitalsPerCountry() { 
+  var spinner = new Spinner(opts).spin(target);   
+  var overlay = iosOverlay({
+   text: "Loading",
+   spinner: spinner });  
+     totalHospitalsTrigerred = true;
+   if (featureG) map.removeLayer(featureG)
+      featureG = L.featureGroup().addTo(map);
+      map.addLayer(featureG)  
+ runLayer = omnivore.csv('/hospitalsbycountry')
+    .on('ready', function() {  
+      var inputs = $(':checked');
+   var checkedaray = [];
+   $.each(inputs, function(ind, obj) { 
+   checkedaray.push($(obj).attr('id'));
+   });
+
+        runLayer.eachLayer(function(layer) { 
+        var docs = 0
+      $.each(checkedaray, function(ind, s){ 
+          switch(s) {
+    case 'training':
+         docs += parseInt(layer.feature.properties.training) || 0;
+        break;
+    case 'non-training':
+         docs += parseInt(layer.feature.properties.nontraining) || 0;
+        break;
+    default:
+        docs +=0
+} 
+      })
+
+     var cc =  L.marker([ layer._latlng.lat, layer._latlng.lng], {
+        icon: L.divIcon({
+            // Specify a class name we can refer to in CSS.
+            className: 'count-icon-red',
+            // Define what HTML goes in each marker.
+            html: docs ,
+            // Set a markers width and height.
+            iconSize: [45, 45]
+        })
+     }).addTo(featureG)
+    })
+         overlay.hide();  
+      })
+   }
+
+      function getAvgColor(d) {
+      return d > 4.6 ? '#7aee7a' :
+          d > 4     ? '#a1ed56' :
+          d > 3     ? '#c3ec2f' :
+          d > 2     ? '#ffe100' :
+          d > 1     ? '#f99716' :
+          d > 0.1   ? '#eb6d4c' :
+          d >= 0     ? '#ec4949' :
+          '#ffffe5';
+  } 
+
+        function getGenderColor(d) {
+      return d > 13 ? '#45596a' :
+          d > 11     ? '#69869f' :
+          d > 9     ? '#89b3bf' :
+          d > 7     ? '#89bfa6' :
+          d > 5     ?  '#9fc288' :
+          d > 3     ?  '#a4ba29' :
+          d >= 1     ?  '#c8ca00' :
+          '#c8ca00';
+  }
+
+        function getAvgDesc(d) {
+      return d > 4.6 ? '(Excellent)' :
+          d > 4     ? '(Very Good)' :
+          d > 3     ? '(Good)' :
+          d > 2     ? '(Fair)' :
+          d > 1     ? '(Poor)' :
+          d > 0.1   ? '(Very Poor)' :
+          d >= 0     ? '(Extremely Poor)' :
+          '(NA)';
+  }
+
+
+  var euaus = ['Australia', 'France', 'United Kingdom'];
+
+   function totalDocsOverlay() { 
+ console.log('hi, I am total docs overlay')
+ //begin
+  totalDocsOverlayTrigerred = true;
+    if (featureGtotalDocsPerDistrictOverlay) map.removeLayer(featureGtotalDocsPerDistrictOverlay)
+  if (featureOverlay) map.removeLayer(featureOverlay)
+      featureOverlay = L.featureGroup().addTo(map);
+      map.addLayer(featureOverlay)    
+       displayCountryPolygons(featureOverlay)
+  map.gridLayer.off();
+  map.gridLayer
+    .on('mousemove click',function(o) {
+        if (o.data) {
+          console.log(o.data.NAME_0)
+           if (tempobjectid != o.data.NAME_0) { 
+          var h=''; 
+          mycountry = []; 
+        
+          totaldocs = 0;
+           if (euaus.indexOf(o.data.NAME_0) < 0) {
+          h ='<div class="popup-header" style="max-width:250px; min-width:250px;">' +    o.data.NAME_0  + '</div><div class="popup-pctdocs-header" align="center"><div class="popup-icon-image-div"  ><img src="images/icon_surgeonbed.png" class="popup-icon-image" > </div> <div class="popup-stats" ><div class="td-ratio" align="center" style="color:'+ getAvgColor(parseFloat(o.data.pctdocs)) +';"> ' + o.data.pctdocs + '<div class="sp-thousand" align="center"> Surgeons per 100,000</div> <div class="popup-text-rating" align="center" style="color:'+ getAvgColor(parseFloat(o.data.pctdocs)) +';">' + getAvgDesc(parseFloat(o.data.pctdocs))  + '</div> </div> </div> <div class="td-number-white">  </div> </div> <div class="popup-middle"> Distribution By Specialty </div> <div class="popup-content">'; 
+
+          h += '<table style="width:100%"><tr>'; 
+          h += '<td class="popup-td"> <div class="td-specialty"> Pediatrics </div> <div class="td-number"> ' + o.data.Pediatrics + ' </div></td>'; 
+            h += '<td class="popup-td"> <div class="td-specialty"> General </div> <div class="td-number"> ' + o.data.General + ' </div></td>'; 
+              h += '<td class="popup-td-last"> <div class="td-specialty"> Orthopaedics </div> <div class="td-number"> ' + o.data.Orthopaedics + ' </div></td>'; 
+          h += '<tr></tr>';
+              h += '<td class="popup-td"> <div class="td-specialty"> Urology </div> <div class="td-number"> ' + o.data.Urology + ' </div></td>'; 
+              h += '<td class="popup-td"> <div class="td-specialty"> Plastics </div> <div class="td-number"> ' + o.data.Plastics + ' </div></td>'; 
+              h += '<td class="popup-td-last"> <div class="td-specialty"> Cardiothoracic / Cardiovascular </div> <div class="td-number"> ' + o.data.Cardiothoracic + ' </div></td>'; 
+            h += '<tr></tr>';
+              h += '<td class="popup-td"> <div class="td-specialty"> Colorectal </div> <div class="td-number"> ' + o.data.Colorectal + ' </div></td>'; 
+              h += '<td class="popup-td"> <div class="td-specialty"> ENT </div> <div class="td-number"> ' + o.data.ENT + ' </div></td>';
+              h += '<td class="popup-td-last"> <div class="td-specialty"> Neurosurgery </div> <div class="td-number"> ' + o.data.Neurosurgery + ' </div></td>'; 
+              h += '<tr></tr>';
+              h += '<td class="popup-td"> <div class="td-specialty"> Oral + Maxillofacial </div> <div class="td-number"> ' + o.data['Oral and Maxillofacial'] + ' </div></td>'; 
+              h += '<td class="popup-td"> <div class="td-specialty"> Opthalmic </div> <div class="td-number"> ' + o.data.Opthalmic + ' </div></td>'; 
+              h += '<td class="popup-td-last"> <div class="td-specialty"> OB/GYN </div> <div class="td-number"> ' + o.data['OB-GYN']  + ' </div></td>';  
+            h += '<tr></tr>';
+          
+              h += '<tr><td colspan="3" class="popup-td-total" colspan="2"> <div class="popup-total"> <div class="td-totalsurg"> Total Surgeons for Country: </div> <div class="td-number-white"> ' + o.data.nodocscntr + ' </div></div><div class="td-totalsurg"> Population: ' + $.number(parseInt(o.data.population)) + ' </div> </td>'; 
+          h += "</tr></table>"; 
+          h += '</div>';
+        }
+        else{
+            // case of australia france and uk
+         /*   var pcts = []
+               pcts['Australia'] = 18.33
+               pcts['France'] = 40
+               pcts['United Kingdom'] = 13.45
+          h ='<div class="popup-header" style="max-width:250px; min-width:250px;">' +    o.data.NAME_0  + '</div><div class="popup-pctdocs-header" align="center"><div class="popup-icon-image-div"  ><img src="images/icon_surgeonbed.png" class="popup-icon-image" > </div> <div class="popup-stats" ><div class="td-ratio" align="center" style="color:#7AED7A;"> ' + pcts[o.data.NAME_0] + '<div class="sp-thousand" align="center"> Surgeons per 100,000</div> <div class="popup-text-rating" align="center" style="color:#7AED7A;"> (Excellent) </div> </div> </div> <div class="td-number-white">  </div> </div> <div class="popup-middle"> &nbsp; </div> <div class="popup-content">';    
+          h += '</div>';
+       */
+        }
+          district.innerHTML = h 
+          $('#total_'+o.data.est_population).html(totaldocs)
+          h = ''
+        //  $(district).css('display', 'block')
+            $(district).fadeIn(300)
+        }
+            tempobjectid = o.data.OBJECTID 
+
+        } else {
+             $(district).css('display', 'none')
+            //   $(district).fadeOut(300)
+          district.innerHTML = '';
+          tempobjectid = 0;
+        }
+    }).on('mouseout', function(o) {
+             $(district).css('display', 'none')
+           //   $(district).fadeIn(300)
+        district.innerHTML = '';
+        tempobjectid = 0;
+    });
+ //end
+   }
+
+    function totalDocsPerCountry () {
+    var spinner = new Spinner(opts).spin(target);   
+  var overlay = iosOverlay({
+   text: "Loading",
+   spinner: spinner });
+
+      console.log('totalDocsPerCountry')
+       totalDocsPerCountryTrigerred = true;
+  if (featureGtotalDocsPerDistrictOverlay) map.removeLayer(featureGtotalDocsPerDistrictOverlay)
+  if (featureG) map.removeLayer(featureG)
+      featureG = L.featureGroup().addTo(map);
+      map.addLayer(featureG)    
+       
+runLayer = omnivore.csv('/byspecialty')
+    .on('ready', function() {      
+      var inputs = $(':checked');
+   var checkedaray = [];
+   $.each(inputs, function(ind, obj) { 
+   checkedaray.push($(obj).attr('id'));
+   });
+         
+      runLayer.eachLayer(function(layer) { 
+      var docs = 0
+      $.each(checkedaray, function(ind, s){ 
+
+          switch(s) {
+    case 'pediatrics':
+         docs += parseInt(layer.feature.properties['Pediatrics']) || 0;
+        break;
+    case 'general':
+         docs += parseInt(layer.feature.properties['General']) || 0;
+        break;
+     case 'orthopaedics':
+         docs += parseInt(layer.feature.properties['Orthopaedics']) || 0;
+        break;
+     case 'urology':
+         docs += parseInt(layer.feature.properties['Urology']) || 0;
+        break;
+     case 'plastic':
+         docs += parseInt(layer.feature.properties['Plastics']) || 0;
+        break;
+     case 'cardiothoracic':
+         docs += parseInt(layer.feature.properties['Cardiothoracic']) || 0;
+        break;
+     case 'colorectal':
+         docs += parseInt(layer.feature.properties['Colorectal']) || 0;
+        break;
+     case 'ENT':
+         docs += parseInt(layer.feature.properties['ENT']) || 0;
+        break;
+     case 'oralandmaxillofacial':
+         docs += parseInt(layer.feature.properties['Oral and Maxillofacial']) || 0;
+        break;
+     case 'ophthalmic':
+         docs += parseInt(layer.feature.properties['Ophthalmic']) || 0;
+        break;
+     case 'obgyn':
+         docs += parseInt(layer.feature.properties['OB-GYN']) || 0;
+        break;
+    case 'neurosurgery':
+         docs += parseInt(layer.feature.properties['Neurosurgery']) || 0;
+        break;
+    case 'unknown':
+         docs += parseInt(layer.feature.properties['Unknown']) || 0;
+        break;    
+    default:
+        docs +=0
+} 
+      })
+        
+       var cc =  L.marker([ layer._latlng.lat, layer._latlng.lng], {
+        icon: L.divIcon({
+            // Specify a class name we can refer to in CSS.
+            className: 'count-icon',
+            // Define what HTML goes in each marker.
+            html: docs ,
+            // Set a markers width and height.
+            iconSize: [45, 45]
+        })
+    }).addTo(featureG);  
+    overlay.hide();
+        });
+    
+      });  
+    }
+
+ function   totalDocsPerDistrictOverlay() { 
+  
+   if (featureGtotalDocsPerDistrictOverlay)   map.removeLayer(featureGtotalDocsPerDistrictOverlay);
+    if (featureOverlay) map.removeLayer(featureOverlay);
+       featureGtotalDocsPerDistrictOverlay = L.featureGroup().addTo(map);
+       map.addLayer(featureGtotalDocsPerDistrictOverlay)
+       displayHoverPolygons(featureGtotalDocsPerDistrictOverlay)
+       L.mapbox.featureLayer()
+   
+    .loadURL('/alldocsforclustergeojson')
+    .on('ready', function(o) {     
+     $.ajax({
+     url: "/SPECIALTY_BY_DISTRICT.json", 
+     dataType: 'json',
+     contentType: "application/json; charset=utf-8",
+    success: function(data) {  
+      json = data  
+    }, 
+    error:  function(err) {  console.log(err) }
+   })
+    
+  map.gridLayer.off();
+  map.gridLayer
+    .on('mousemove click',function(o) {
+       $('.leaflet-control-grid').css('display', 'none')
+        if (o.data) {
+           if (tempobjectid != o.data.OBJECTID) { 
+           h=''; 
+           console.log( tempobjectid + "<<<temp json>>>" + o.data.OBJECTID)
+           var mydistrict = [];
+                       for (i=0; i<json.length;i++) {
+              if(o.data.OBJECTID == json[i].obj_id && o.data.OBJECTID != '1922') { 
+                 console.log("OBJECT ID >>>>" + o.data.OBJECTID)
+              mydistrict.push(json[i]);
+              }
+            }
+          totaldocs = 0;
+         // var options = new JsNumberFormatter.formatNumberOptions();
+         // var estpopuplation = JsNumberFormatter.formatNumber(o.data.est_population, options, true);
+////////////////////////////////////////////////////////////////////////
+
+if (euaus.indexOf(o.data.NAME_0) < 0){
+         h ='<div class="popup-header" style="max-width:250px; min-width:250px;"><div class="district-name" >' + o.data.NAME_1  + '</div><div class="cntry-name-header" >'  +    o.data.NAME_0 + '</div></div><div class="popup-pctdocs-header" align="center"><div class="popup-icon-image-div"  ><img src="images/icon_surgeonbed.png" class="popup-icon-image-smaller" > </div> <div class="popup-stats" ><div class="td-ratio" align="center"> <div class="ratio" style="color:'+ getAvgColor(parseFloat( o.data.pctdocsbydistrict)) +';">' +  o.data.pctdocsbydistrict + '</div><div class="sp-thousand" align="center"> Surgeons per 100,000</div> <div class="popup-text-rating" align="center"  style="color:'+ getAvgColor(parseFloat(o.data.pctdocsbydistrict)) +';"> ' + getAvgDesc(parseFloat(o.data.pctdocsbydistrict))  + '</div> </div> </div> <div class="td-number-white">  </div> </div>'
+           if (parseFloat(o.data.pctdocsbydistrict) > 0.0)
+          {  h+=' <div class="popup-middle"> Distribution By Specialty </div> <div class="popup-content">'; }
+
+          //table
+          h += '<table style="width:100%" >'; 
+          var totaldocs = 0;
+          var cspan = mydistrict.length
+          var district_population = 0;
+
+           if (parseFloat(o.data.pctdocsbydistrict) > 0.0) {
+       
+          $.each(mydistrict, function(index, spec){
+          //   alert(JSON.stringify(spec))
+               index%3==0 ? h+='<tr>' : h+='' 
+           district_population = spec['est_population']
+           if(index%3<2) {
+          h += '<td class="popup-td"> <div class="td-specialty"> ' + spec['specialty'] + ' </div> <div class="td-number"> ' + spec['docs'] + ' </div></td>'; } 
+
+          else { 
+ h += '<td class="popup-td-last"> <div class="td-specialty"> ' + spec['specialty'] + ' </div> <div class="td-number"> ' + spec['docs'] + ' </div></td></tr>';
+          }           
+
+            totaldocs += parseInt(spec['docs']);  
+            }); // end each loop
+            }
+            else {
+               district_population = mydistrict[0]['est_population'];
+            }
+
+             if(cspan < 2) colspantxt = ''
+             if(cspan ==2) colspantxt = 'colspan="2"'
+             if(cspan > 2) colspantxt = 'colspan="3"'
+              h += '<tr><td '+ colspantxt +' class="popup-td-total" > <div class="popup-total"> <div class="td-totalsurg"> Total for District: </div> <div class="td-number-white"> ' + totaldocs + ' </div></div> </td></tr>'; 
+              h += '<tr><td '+ colspantxt +' class="popup-td-population" > <div class="popup-total"> <div class="td-totalsurg"> Population: </div> <div class="td-totalsurg"> ' + $.number( parseInt(district_population)); + ' </div></div> </td></tr>'; 
+              h += "</table>"; 
+              h += '</div>';
+        }
+        else{
+            // case of australia france and uk
+         /*   var pcts = []
+               pcts['Australia'] = 18.33
+               pcts['France'] = 40
+               pcts['United Kingdom'] = 13.40
+
+          h ='<div class="popup-header" style="min-width:250px;">' +    o.data.NAME_0  + '</div><div class="popup-pctdocs-header" align="center"><div class="popup-icon-image-div"  ><img src="images/icon_surgeonbed.png" class="popup-icon-image" > </div> <div class="popup-stats" ><div class="td-ratio" align="center" style="color:#7AED7A;"> ' + pcts[o.data.NAME_0] + '<div class="sp-thousand" align="center"> Surgeons per 100,000</div> <div class="popup-text-rating" align="center" style="color:#7AED7A;"> (Excellent) </div> </div> </div> <div class="td-number-white">  </div> </div> <div class="popup-middle"> &nbsp; </div> <div class="popup-content">';    
+          h += '</div>';
+          */
+        } 
+
+          district.innerHTML = h; 
+          $('#total_'+o.data.est_population).html(totaldocs);
+          h = '';
+           //  $(district).css('display', 'block')
+               $(district).fadeIn(300);
+        }
+            tempobjectid = o.data.OBJECTID 
+        } else {
+              $(district).css('display', 'none')
+          district.innerHTML = '';
+          tempobjectid = 0;
+        }
+    }).on('mouseout', function(o) {
+             $('.leaflet-control-grid').css('display', 'none')
+             $(district).css('display', 'none')
+        district.innerHTML = '';
+        tempobjectid = 0;
+    });
+ })
+}
+
+ function   totalDocsPerDistrict(specialties) { 
+     if (zoom > 5)  totalDocsPerDistrictTrigerred = true
+       var spinner = new Spinner(opts).spin(target);   
+  var overlay = iosOverlay({
+   text: "Loading",
+   spinner: spinner });    
+
+      if (featureG)   map.removeLayer(featureG)
+        featureG = L.featureGroup().addTo(map);
+       map.addLayer(featureG)
+      // displayHoverPolygons(featureG)
+ 
+     L.mapbox.featureLayer() 
+
+    .loadURL('/alldocsforclustergeojson')
+    .on('ready', function(e) {     
+    
+    function makeGroup(color) {
+
+      return new L.MarkerClusterGroup({
+        iconCreateFunction: function(cluster) {
+
+             str =  cluster.getChildCount().toString()
+             if (str.length == 1)
+              { iconsize = [26,26]
+                iconclass = 'cluster-green20'
+                div = '<div style="margin-top:0px;">' }
+            else if (str.length == 2 ) { iconsize = [38,38]
+              iconclass = 'cluster-green' 
+              div = '<div style="margin-top:4px;">'
+              }
+              else { iconsize = [50,50]
+               iconclass = 'cluster-green40' 
+               div = '<div style="margin-top:10px;">'
+               }
+
+            return    new L.DivIcon({
+            iconSize: iconsize,
+            className: iconclass,
+            html: div + '' +  cluster.getChildCount() + ' </div>'           
+          });    
+        }, 
+
+        polygonOptions: {
+        fillColor: '#3887be',
+        color: '#3887be',
+        weight: 2,
+        opacity: 0,
+        fillOpacity: 0
+      }
+      }).addTo(featureG);
+    } 
+
+  var groups = {
+     <% @alldistricts.each do |dstrct|  %>
+       <%=  dstrct.id.to_s   %>:makeGroup('<%=  dstrct.id.to_s   %>'),
+      <% end %>
+     
+    };
+
+    var groupsbycountry = {
+
+      ethiopia: makeGroup('ethiopia'),
+      kenya: makeGroup('kenya'),
+      rwanda: makeGroup('rwanda'),
+      uganda: makeGroup('uganda'),
+      zambia: makeGroup('zambia'),
+      zimbabwe: makeGroup('zimbabwe'),
+      malawi: makeGroup('malawi'),
+      tanzania: makeGroup('tanzania'),
+      mozambique: makeGroup('mozambique'),
+      burundi: makeGroup('burundi') 
+    };
+
+
+    e.target.eachLayer(function(layer) { 
+
+    // layer.setIcon(L.icon(layer.feature.properties.icon)); 
+  if (zoom > 5)    groups[layer.feature.properties.districtId].addLayer(layer);   
+  else    groupsbycountry[layer.feature.properties.country.toLowerCase()].addLayer(layer);
+
+   var sp = layer.feature.properties.specialty
+   if (sp == 'General') sp = 'Specialty:General'
+     h = '<div><b>' +  sp + '</b></div>';
+     surgclass = "";
+     if(layer.feature.properties.organisation != 'Unknown Hospitals') surgclass = 'surgeon-tooltip'
+
+     h+= '<div id="'+layer.feature.properties.organisation+'" class="'+surgclass+'" data-longitude="'+layer.feature.properties.organisationlon+'"  data-latitude="'+layer.feature.properties.organisationlat+'">' +  layer.feature.properties.organisation +  ', ' + layer.feature.properties.cityname +', ' + layer.feature.properties.country + '</div>';  
+
+     layer.bindPopup(h)
+
+    });
+      overlay.hide();     
+    }); 
+   }
+
+ /*  used by displayHoverPolygons()  */
+   function getStyle(feature) {
+
+      return {
+          weight: 0,
+          opacity: 1.0,
+          color: '#000',
+          fillOpacity: 0.0,
+          fillColor: getColor(100)
+      };
+  }   
+  /*  used by displayHoverPolygons()  */
+   function getColor(d) {
+      return d > 1000 ? '#8c2d04' :
+          d > 500  ? '#cc4c02' :
+          d > 200  ? '#ec7014' :
+          d > 100  ? '#000000' :
+          d > 50   ? '#000000' :
+          d > 20   ? '#fee391' :
+          d > 10   ? '#fff7bc' :
+          '#ffffe5';
+  }
+  /*  used by displayHoverPolygons()  */
+    function onEachFeature(feature, layer) {
+      // alert(JSON.stringify(feature)) 
+      layer.on({
+          mousemove: mousemove,
+          mouseout: mouseout
+         // click: zoomToFeature
+      });
+  }
+
+    /*  used by  */
+    function onEachFeatureDensity(feature, layer) {
+       // alert(feature.properties.surgeons || 0 +  feature.properties.obstetricians || 0 + feature.properties.anesthesiologists || 0 )
+   var x = $('#global-surgeons:checked').length > 0 ? feature.properties.surgeons || 0 : 0
+   var y = $('#global-obstetricians:checked').length > 0 ? feature.properties.obstetricians || 0 : 0
+   var z = $('#global-anesthesiologists:checked').length > 0 ? feature.properties.anesthesiologists || 0 : 0
+       total = x + y + z
+
+      dsty  =  total / (feature.properties.population / 100000)
+      layer.html = 'test'
+      layer.setStyle(myStyle(dsty))
+     // alert(JSON.stringify(layer.style))
+      layer.on({
+          mousemove: mousemoveDensity,
+          mouseout: mouseoutDensity,
+          mouseover: mouseoverDensity,
+          click: function() { 
+
+    
+      $('#stats-title').find('span').html('Density for ' + feature.properties.NAME )
+     
+      h='<div style="overflow:hidden; height:200px;" align="center">'    
+      h+='<div id="stat_"  class="org-list-item nopadding">'
+      h+= '<div class="state-name  nopadding" style="margin:7px;" align="center"> <span>Population: </span>'
+       dty  = x+y+z / (feature.properties.population / 100000)
+      h+= $.number(feature.properties.population) +'<br/> <span> Surgeons: </span> '+  $.number(x) +' <br/> <span>Anesthesiologists: </span>' +  $.number(z) +'<br/> <span>Obstetricians:</span> ' + $.number(y) +' <br/> <span> Surgeons per 100.000: </span>' + $.number(feature.properties.surgperhundredk) +'</div>'  
+      h+= '</div></div>'     
+     
+      $('#stats-modal-body').html(h)
+      $('#stats-modal').modal('show');
+                 
+          }
+      });
+  }
+
+      function mousemoveDensity(e) {
+      var layer = e.target;
+      window.clearTimeout(closeTooltip);
+      // highlight feature
+      layer.setStyle({
+          weight: 1
+           
+      });
+      if (!L.Browser.ie && !L.Browser.opera) {
+          layer.bringToFront();
+      }
+  }
+
+    function mouseoutDensity(e) {
+     var layer = e.target;
+       layer.setStyle({
+          weight: 0
+
+      });
+  }
+
+      function mouseoverDensity(e) {
+     var layer = e.target;
+       layer.setStyle({
+          weight: 2,
+          
+      });
+  }
+
+      function myStyle(density) { 
+     
+      var clr = getSurgeonsDensityColor(density)
+      var myStyle = {
+          weight: 0.5,
+          opacity: 1.0,
+          color: "#ccc",
+          fillOpacity: 1.0,
+          fillColor: clr  }      
+      return myStyle;
+    }
+
+ 
+
+    var closeTooltip;
+   function zoomToFeature(e) {
+      map.fitBounds(e.target.getBounds());
+  }
+
+    function mousemove(e) {
+      var layer = e.target;
+      window.clearTimeout(closeTooltip);
+      // highlight feature
+      layer.setStyle({
+          weight: 2,
+          opacity: 0.6,
+          fillOpacity: 0.0
+      });
+      if (!L.Browser.ie && !L.Browser.opera) {
+          layer.bringToFront();
+      }
+  }
+
+  function mouseout(e) {
+     var layer = e.target;
+       layer.setStyle({
+          weight: 0,
+          opacity: 1.0,
+          fillOpacity: 0.0
+      });
+  }
+
+  var popup = new L.Popup({ autoPan: false });
+   function displayHoverPolygons(layer) { 
+      $.ajax({
+     url: "/PROVINCESSOURCEETHKEN.geojson", 
+     dataType: 'json',
+     contentType: "application/json; charset=utf-8",
+    success: function(data) { 
+      var polygons = data 
+      var statesLayer = L.geoJson(polygons,  {
+      style: getStyle,
+      onEachFeature: onEachFeature
+  }).addTo(layer);
+    // map.doubleClickZoom.disable();
+    // map.touchZoom.disable();
+    // map.scrollWheelZoom.disable();
+    }, 
+    error:  function(err) {  console.log(err) }
+})
+             map.touchZoom.enable();
+
+}
+
+   function displayCountryPolygons(layer) { 
+      $.ajax({
+     url: "/COUNTRIES6.geojson", 
+     dataType: 'json',
+     contentType: "application/json; charset=utf-8",
+    success: function(data) { 
+      var polygons = data 
+      var statesLayer = L.geoJson(polygons,  {
+      style: getStyle,
+      onEachFeature: onEachFeature
+  }).addTo(layer);  
+    }, 
+    error:  function(err) {  console.log(err) }
+})
+             map.touchZoom.enable();
+}
+
+ function getSurgeonsDensityColor(d) { 
+
+  return d > 80   ? '#8c6723' :
+          d > 60  ? '#c07524' :
+          d > 40  ? '#d8843b' :
+          d > 20  ? '#e7a044' :
+          d > 10  ? '#ecb28f' :
+          d > 6   ? '#f3e7bf' :
+          d > 1   ? '#f9f3dd' :
+          '#ffffff';
+
+ }
+ 
+
+    function displaySurgeonsDensity(layer) { 
+  var spinner = new Spinner(opts).spin(target);   
+  var overlay = iosOverlay({
+   text: "Loading",
+   spinner: spinner }); 
+    if(countryStats == null) {
+      $.ajax({
+     url: "/STATSFOROVERLAY.geojson", 
+     dataType: 'json',
+     contentType: "application/json; charset=utf-8",
+    success: function(data) {    
+      var polygons = data
+       countryStats = data 
+       var statesLayer = L.geoJson(polygons,  {
+      onEachFeature: onEachFeatureDensity
+  }).addTo(layer);   
+      addLabels(layer);
+      projectedDensityLegendText()
+          overlay.hide()  
+    }, 
+    error:  function(err) {  console.log(err)
+       overlay.hide()  
+     }
+})
+
+    }
+    else { 
+      var statesLayer = L.geoJson(countryStats,  {
+      onEachFeature: onEachFeatureDensity
+  }).addTo(layer);   
+      addLabels(layer);
+    overlay.hide()
+
+    }
+             map.touchZoom.enable();
+}
+
+
+ function addLabels(layer) { 
+   if ( countryNames == null) {
+        $.ajax({
+     url: "/labels.geojson", 
+     dataType: 'json',
+     contentType: "application/json; charset=utf-8",
+    success: function(data) {    
+      var points = data 
+       countryNames = data
+      var gj = L.geoJson(points, {
+    pointToLayer: function(feature, ll) {
+       
+        return L.marker(ll, {
+            icon: L.divIcon({
+                className: 'label',
+                html: feature.properties.ABBREV,
+                iconSize: [4, 4]
+            })
+        });
+    }
+}).addTo(layer);  
+          
+    }, 
+    error:  function(err) {  console.log(err)
+         
+     }
+})
+      } 
+
+else { 
+
+        var gj = L.geoJson(countryNames, {
+    pointToLayer: function(feature, ll) {
+
+        return L.marker(ll, {
+            icon: L.divIcon({
+                className: 'label',
+                html: feature.properties.ABBREV,
+                iconSize: [4, 4]
+            })
+        });
+    }
+}).addTo(layer);  
+
+
+}
+
+
+
+
+ }
+ 
+   function displayCountryPolygonsNoGFA(layer) { 
+      $.ajax({
+     url: "/COUNTRIESNOGFA.geojson", 
+     dataType: 'json',
+     contentType: "application/json; charset=utf-8",
+    success: function(data) { 
+      var polygons = data 
+      var statesLayer = L.geoJson(polygons,  {
+      style: getStyle,
+      onEachFeature: onEachFeature
+  }).addTo(layer);  
+    }, 
+    error:  function(err) {  console.log(err) }
+})
+             map.touchZoom.enable();
+}
+
+function displayAllCountriesPolygons(layer) { 
+
+    $.ajax({
+     url: "/COUNTRIES.geojson", 
+     dataType: 'json',
+     contentType: "application/json; charset=utf-8",
+    success: function(data) { 
+      var polygons = data 
+      var statesLayer = L.geoJson(polygons,  {
+      style: getStyle,
+      onEachFeature: onEachFeature
+  }).addTo(layer);  
+    }, 
+    error:  function(err) {  console.log(err) }
+})
+             map.touchZoom.enable();
+  
+  }
+
+
+   function organizations() { 
+    orgTrigerred = true;
+var spinner = new Spinner(opts).spin(target);   
+  var overlay = iosOverlay({
+   text: "Loading",
+   spinner: spinner });
+        if (featureG)   map.removeLayer(featureG)
+        featureG = L.featureGroup().addTo(map);
+       map.addLayer(featureG)
+  //  runLayer = omnivore.csv('/docsbyorganisationsgeojson')
+
+  L.mapbox.featureLayer()
+    .loadURL('/docsbyorganisationsgeojson')
+    .on('ready', function(e) {  
+          overlay.hide();
+        function makeGroup(color) {
+      return new L.MarkerClusterGroup({
+        iconCreateFunction: function(cluster) {
+                str =  cluster.getChildCount().toString()
+             if (str.length == 1)
+              { iconsize = [26,26]
+                iconclass = 'cluster-red20'
+                div = '<div style="margin-top:0px;">' }
+            else if (str.length == 2 ) { iconsize = [38,38]
+              iconclass = 'cluster-red' 
+              div = '<div style="margin-top:4px;">'
+              }
+              else { iconsize = [50,50]
+               iconclass = 'cluster-red40' 
+               div = '<div style="margin-top:10px;">'
+               }
+
+            return    new L.DivIcon({
+            iconSize: iconsize,
+            className: iconclass,
+            html: div + '' +  cluster.getChildCount() + ' </div>'           
+          });
+        },  
+
+        polygonOptions: {
+        fillColor: '#3887be',
+        color: '#3887be',
+        weight: 2,
+        opacity: 0,
+        fillOpacity: 0
+      }
+      }).addTo(featureG);
+    }  
+      
+      var groups = {
+      ethiopia: makeGroup('ethiopia'),
+      kenya: makeGroup('kenya'),
+      rwanda: makeGroup('rwanda'),
+      uganda: makeGroup('uganda'),
+      zambia: makeGroup('zambia'),
+      zimbabwe: makeGroup('zimbabwe'),
+      malawi: makeGroup('malawi'),
+      tanzania: makeGroup('tanzania'),
+      mozambique: makeGroup('mozambique'),
+      burundi: makeGroup('burundi')
+    };
+
+    e.target.eachLayer(function(layer) {         
+        
+       //  layer.setIcon(L.icon(layer.feature.properties.icon)); 
+         groups[layer.feature.properties.country.toLowerCase()].addLayer(layer);
+    });
+       });
+   }
+
+  function  docsPerOrganization(lat, lon, openPopupId) { 
+    zoom = 8
+    console.log('zoom is ' + zoom)
+    var spinner = new Spinner(opts).spin(target);   
+  var overlay = iosOverlay({
+   text: "Loading",
+   spinner: spinner });
+
+   orgTrigerred = false;
+   hospitalsstate = true;
+   densitystate = false;
+   totalDocsPerCountryTrigerrable = true;
+   totalDocsPerDistrictTrigerrable = true;
+   totalHospitalsTrigerrable = true;
+   totalHospitalsTrigerred = false;
+   organisationsTrigerrable = true;
+    if(lat && !isNaN(lat)) {
+     map.setView([parseFloat(lat), parseFloat(lon)], zoom)
+     console.log('lat is >> ' + lat);
+     $(".doctors").hide();
+     $(".specsubmenu").hide();
+     $(".checkboxes").hide();  
+     $(".hospitals").show();
+     $('.specsubmenu-hospitals').show();
+      }
+     
+      if (featureG)   map.removeLayer(featureG)
+        featureG = L.featureGroup().addTo(map);
+       map.addLayer(featureG)
+
+      runLayer = omnivore.csv('/docsbyorganisations')
+    .on('ready', function() {     
+     overlay.hide();
+
+
+
+        runLayer.eachLayer(function(layer) { 
+        var iconsrc =  layer.feature.properties.training == 'y' ? ' images/training_center_pin.png' : 'images/training_center_pin.png'
+      var css =  layer.feature.properties.training == 'y' ? ' css-icon-tc' : 'css-icon'
+          var cssIcon = L.divIcon({
+          'iconUrl' : iconsrc,
+          'iconSize' : [35, 90],
+          'iconAnchor' : [35, 35],
+          'popupAnchor' : [-17, -27], // [horizontal, vertical]
+          'className' : css  });
+
+
+       var cc =  L.marker([ layer._latlng.lat, layer._latlng.lng], {   icon: cssIcon }).addTo(featureG);   
+
+              var h =  "<div align='left' style='margin-left:6px; font-size:13px;max-width:200px;'><b>"  + layer.feature.properties.organisation + "</b></div>" 
+              var tc =   layer.feature.properties.training == 'y' ? 'Yes' : 'No'
+               h += '<div id="container" style="min-width:200px; max-width:200px; height:100%; vertical-align:middle;">'
+               if(layer.feature.properties.training == 'y') h+= '<img src="images/icon_training_hospital.png" style="display:inline-block; max-width:55px; line-height:100%;float:left; margin-top:15%;" />'
+                else  h+= '<img src="images/icon_hospital.png"  style="display:inline-block; max-width:55px; line-height:100%;float:left; margin-top:15%;"/>'
+               h += '<div id="tooltipcontent" align="left" style="display:inline-block; max-width:145px; padding-left:10px;"><div align="left" id="'+layer.feature.properties.organisation+'"> Training Center: '  + tc + '</div>' 
+               h += '<div align="left" style="display:inline-block;"> Total Surgeons:' + layer.feature.properties.nodocs + '</div>'
+               h += '<div align="left"> Specialties:'
+               h += '<ul class="popup-hospital-specs" style="padding-left:0px;">'
+              $.each(layer.feature.properties, function(key, value) {
+               // alert(key + '>>>' + value )
+               var legitspecs =  ['Unknown','Pediatrics','General','Orthopaedics','Urology','Plastics','Cardiothoracic','Colorectal','ENT','Oral and Maxillofacial','Opthalmic','OB-GYN','Neurosurgery']       
+                if(legitspecs.indexOf(key) > -1 && !isNaN(parseInt(value)))   h += '<li><i>' + key  + ': ' +  value +'</i></li>'            });
+                 h += '</ul></div></div>'            
+             cc.bindPopup(h);    
+              cc.on('click', function(e) { cc.openPopup(); $(cc).css('z-index','10000'); });
+            /* cc.on('mouseout', function(e) { cc.closePopup(); $(cc).css('z-index','10');}); */
+              var c1 = ''
+             
+             if(openPopupId) c1  = openPopupId.trim()
+             var c2 = layer.feature.properties.organisation.trim()
+              if(c1 == c2) { cc.openPopup()} 
+        });
+    });
+       $(district).css('display', 'none')
+     //   $(district).fadeOut(100)
+   map.gridLayer.off();
+  }
+
+  function gender() { 
+   if (featureG)   map.removeLayer(featureG)
+        featureG = L.featureGroup().addTo(map);
+       map.addLayer(featureG)
+        if (zoom < 5 ) displayCountryPolygonsNoGFA(featureG)
+var runLayer = omnivore.geojson('/COSECA_COUNTRIES.geojson')
+    .on('ready', function() {
+        runLayer.eachLayer(function(layer) {
+        map.gridLayer.off();
+  map.gridLayer
+    .on('mousemove click',function(o) {
+         console.log(o)
+        if (o.data) {
+           if (tempobjectid != o.data.NAME_0) { 
+        var h=''; 
+        mycountry = []; 
+        totaldocs = 0;
+        var pctmales = 100.0 - parseFloat(o.data.femalescntr) 
+        var males =  Math.round((o.data.nodocscntr * pctmales) / 100, 0)
+        var females =  parseInt(o.data.nodocscntr) - males
+          h ='<div class="popup-header" style="max-width:250px; min-width:250px;">' +    o.data.NAME_0  + '</div><div class="popup-pctdocs-header" align="center"><div class="popup-icon-image-div"  ><img src="images/icon_gender.png" class="popup-icon-image-smaller" > </div> <div class="popup-stats" ><div class="td-ratio" align="center" style="color:'+ getGenderColor(parseFloat(o.data.femalescntr))+'"> ' +  o.data.femalescntr + '<div class="sp-thousand" align="center"> Precentage of Female Surgeons </div> <div class="popup-text-rating" align="center"> </div> </div> </div> <div class="td-number-white">  </div> </div> <div class="popup-middle"> Distribution By Gender </div> <div class="popup-content">'; 
+
+          h += "<table style='width:100%;'><tr>"; 
+          h += '<td class="popup-td"> <div class="td-specialty"> Male surgeons </div> <div class="td-number"> ' + males + ' </div></td>'; 
+            h += '<td class="popup-td"> <div class="td-specialty"> Female surgeons </div> <div class="td-number"> ' + females + ' </div></td>';           
+          h += '</tr>';         
+            h += '<tr>'; 
+              h += '<td colspan="2" class="popup-td-total" > <div class="popup-total"> <div class="td-totalsurg">  Total Surgeons: </div> <div class="td-number-white"> ' + o.data.nodocscntr + ' </div></div> </td>'; 
+
+          h += "</tr></table>"; 
+          h += '</div>';
+          district.innerHTML = h 
+          $('#total_'+o.data.est_population).html(totaldocs)
+          h = ''
+          var noshow = ['FRA','AUS','GBR'];
+         if(noshow.indexOf(o.data.ADM0_A3) < 0  )  $(district).fadeIn(300); 
+        }
+            tempobjectid = o.data.OBJECTID 
+
+        } else {
+              $(district).css('display', 'none')
+        //    $(district).fadeOut(100)
+          district.innerHTML = '';
+          tempobjectid = 0;
+        }
+    }).on('mouseout', function(o) {
+             $(district).css('display', 'none')
+         //   $(district).fadeOut(100)
+        district.innerHTML = '';
+        tempobjectid = 0;
+    });   
+        
+        }); 
+    });
+      map.on('draw:created', function(e) {
+      featureG.addLayer(e.layer);   
+  });
+  }
+
+   function genderbydistrict() { 
+   if (featureG)   map.removeLayer(featureG)
+        featureG = L.featureGroup().addTo(map);
+       map.addLayer(featureG)
+var runLayer = omnivore.geojson('/COSECA_COUNTRIES.geojson')
+    .on('ready', function() {
+        runLayer.eachLayer(function(layer) {       
+             map.gridLayer.off();
+  map.gridLayer
+    .on('mousemove click',function(o) {          
+        if (o.data) {
+       // console.log(JSON.stringify(o.data))           
+           if (tempobjectid != o.data.NAME_0) { 
+          var h=''; 
+           mycountry = []; 
+          totaldocs = 0;
+          var nodocs = parseInt(o.data.nodocs)
+          var female = Math.round((nodocs * parseFloat(o.data.pctfemales) / 100),0)
+          var male = nodocs - female
+          h ='<div class="popup-header" style="max-width:250px; min-width:250px;"><div class="district-name" >' + o.data.NAME_1 +  '</div><div class="cntry-name-header">'  +    o.data.NAME_0
+            + ' </div></div><div class="popup-pctdocs-header" align="center"><div class="popup-icon-image-div"  ><img src="images/icon_gender.png" class="popup-icon-image-smaller" > </div> <div class="popup-stats" ><div class="td-ratio" align="center" style="color:'+ getGenderColor(parseFloat(o.data.pctfemales))+'"> ' +  o.data.pctfemales + '<div class="sp-thousand" align="center"> Precentage of Female Surgeons </div> <div class="popup-text-rating" align="center"> </div> </div> </div> <div class="td-number-white">  </div> </div> <div class="popup-middle"> Distribution By Gender </div> <div class="popup-content">'; 
+          //table
+
+          h += "<table style='width:100%'><tr>"; 
+          h += '<td class="popup-td"> <div class="td-specialty"> Male surgeons </div> <div class="td-number"> ' + male + ' </div></td>'; 
+            h += '<td class="popup-td"> <div class="td-specialty"> Female surgeons </div> <div class="td-number"> ' + female + ' </div></td>';           
+          h += '</tr>';         
+            h += '<tr>'; 
+              h += '<td colspan="2" class="popup-td-total" > <div class="popup-total"> <div class="td-totalsurg">  Total Surgeons for District: </div> <div class="td-number-white"> ' + nodocs + ' </div></div> </td>'; 
+
+          h += "</tr></table>"; 
+          h += '</div>';
+          district.innerHTML = h 
+          $('#total_'+o.data.est_population).html(totaldocs)
+          h = ''
+          var noshow = ['FRA','AUS','GBR'];
+         if(noshow.indexOf(o.data.ADM0_A3) < 0  )  $(district).fadeIn(300); 
+           
+        }
+            tempobjectid = o.data.OBJECTID 
+
+        } else {
+             $(district).css('display', 'none')
+          //  $(district).fadeOut(100)
+          district.innerHTML = '';
+          tempobjectid = 0;
+        }
+    }).on('mouseout', function(o) {
+            $(district).css('display', 'none')
+        //    $(district).fadeOut(100)
+        district.innerHTML = '';
+        tempobjectid = 0;
+    });         
+        }); 
+    });
+      map.on('draw:created', function(e) {
+      featureG.addLayer(e.layer);  
+  });
+ 
+  displayHoverPolygons(featureG)
+  }
+</script>
+
+<div id='legend' style='display:none;'>
+  <strong>Surgeon density per 100,000 inhabitants</strong>
+  <nav class='legend clearfix'>
+    <div style='background:#ec4949;'></div>
+    <div style='background:#eb6d4c;'></div>
+    <div style='background:#f99716;'></div>
+    <div style='background:#ffe100;'></div>
+    <div style='background:#c3ec2f;'></div>
+    <div style='background:#a1ed56;'></div>
+    <div style='background:#7aee7a;'></div>
+    <label>0 </label>
+    <label>0.1 - 1</label>
+    <label>1.1 - 2</label>
+    <label>2.1 - 3</label>
+    <label>3.1 - 4</label>
+    <label>4.1 - 4.6</label>
+    <label> >= 4.7 </label>  
+</div>
+<script> 
+  //  map.legendControl.addLegend($('#legend').html())
+ </script>
+ <style type="text/css">
+
+ .label { 
+  font-size: 9px;
+  color: #5A7183;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  }
+
+  .map-legends {
+   position: fixed;
+   top:60px;
+   right:6px;
+   min-width: 250px;
+    }
+
+  .leaflet-control-minimap { 
+   margin-top: 95px !important;
+   margin-right: 12px !important;
+      }
+
+ .leaflet-control-zoom { 
+   margin-right: 12px !important;
+   margin-bottom: 175px !important;
+      }
+
+   .css-icon {
+    width: 35px;
+    height: 90px;
+    background-image: url('images/hospital_pin.png');
+  
+  }   
+
+     .css-icon-tc {
+    width: 35px;
+    height: 90px;
+    background-image: url('images/training_center_pin.png');
+  
+  }
+ </style>

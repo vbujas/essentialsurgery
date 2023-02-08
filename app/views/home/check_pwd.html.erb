@@ -1,0 +1,39 @@
+
+<div class="contaner text-center center-block" align="center">
+
+<div class="col-md-6 col-sm-8 col-xs-12 col-md-offset-3 col-sm-offset-2" style="margin-top:15%; clear:both">  
+<div style="font-size:22px; font-weight:600;" align="left">Enter password:</div>
+<div style="width:92%;">
+    <form>
+     <div class="well col-md-12 col-sm-12 col-xs-12 ">
+        <div class="col-md-9 col-sm-9 col-xs-12 nopadding" style="line-height:55px;vertical-align:middle">
+        <input type="password" class="form-control" id="inputPassword" placeholder="Password" style=" margin-top:12px;">
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12" style="line-height:55px;vertical-align:middle">
+        <button class="btn btn-primary"  >Access</button>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+
+<script type="text/javascript">    
+$('.btn-primary').on('click', function(e) { 
+ e.preventDefault();
+pwd = $('#inputPassword').val()
+    $.ajax({
+     type: 'GET',   
+     url: "/docheckpassword",  
+     data: 'pwd=' + pwd,
+     contentType: "application/json; charset=utf-8",
+    success: function(data) {  
+        data.message == 'ok'?  location.reload()  : alert('wrong password')
+    }, 
+    error:  function(err) {  console.log(err)
+     
+     }
+})
+})
+</script>
+
+</div>

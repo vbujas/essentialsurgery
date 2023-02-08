@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="images/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="images/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="images/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="images/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="images/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="images/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff"> 
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1; user-scalable=no"/>
+
+  <title>National Surgical Planning Map</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+
+  <%= csrf_meta_tags %>
+     <style type="text/css">
+      body { overflow: hidden; }
+
+      .navbar-offset { margin-top: 50px; }
+      #map .ol-zoom { font-size: 1.2em; }
+
+      .zoom-top-opened-sidebar { margin-top: 5px; }
+      .zoom-top-collapsed { margin-top: 45px; }
+
+      .mini-submenu{
+        display:none;  
+        background-color: rgba(255, 255, 255, 0.46);
+        border: 1px solid rgba(0, 0, 0, 0.9);
+        border-radius: 4px;
+        padding: 0px;  
+        /*position: relative;*/
+        width: 32px;
+        text-align: center;
+      }
+
+         .mini-submenu-context{
+        display:none;  
+        background-color: rgba(255, 255, 255, 0.46);
+        border: 1px solid rgba(0, 0, 0, 0.9);
+        border-radius: 4px;
+        padding: 0px;  
+        /*position: relative;*/
+        width: 32px;
+        text-align: center;
+      }
+
+      .mini-submenu-left {
+        position: absolute;
+        top: 60px;
+        left: .5em;
+        z-index: 40;
+      }
+
+      .t { 
+       font-size: 12px;
+       font-weight: bold;
+      }
+
+      #map { z-index: 35; }
+      .sidebar { z-index: 45; }
+      .main-row { position: relative; top: 0; }
+      .mini-submenu:hover{  cursor: pointer; }
+      .mini-submenu-context:hover{  cursor: pointer; }
+      .slide-submenu{
+        display: inline-block;
+        padding: 1px 8px;
+        cursor: pointer;
+        line-height: 13px;
+        font-size: 11px;
+        vertical-align: middle; }
+
+        .slide-submenu-context{
+        display: inline-block;
+        padding: 1px 8px;
+        cursor: pointer;
+        line-height: 13px;
+        font-size: 11px;
+        vertical-align: middle; }
+
+      .hide-story {   display: none; }
+      .list-story-item.active   {
+       background-color: #ffdc7f !important;
+       border-color: #ffdc7f !important;
+       color:#000;
+        }
+
+        .list-group-item.active   {
+       background-color: #ffdc7f !important;
+       border-color: #ffdc7f !important;
+       color:#000;
+        }
+
+         .list-story-item.active:hover  .list-story-item.active:focus   {
+       color:#000;
+        }
+           .list-group-item.active:hover   {
+       color:#000;
+        }
+           .list-group-item.active:focus   {
+       color:#000;
+        }
+
+
+    </style>
+ 
+    <script type="text/javascript">
+      var densitymap = 'heatherjasper.22l7xplb';
+      //'heatherjasper.cxt3om7b'; 
+      // 'heatherjasper.dk1s4cne';   
+      var gendermap = 'heatherjasper.7c6sfg88'; //'heatherjasper.9op6i529';
+      var blankmap = 'heatherjasper.42dzg8je';
+      var ngosmap = 'heatherjasper.5rbxrats';
+
+       $(".leaflet-control-zoom").toggleClass("ol-zoom", true);
+       function applyMargins() {
+        var leftToggler = $(".mini-submenu-left");
+        if (leftToggler.is(":visible")) {
+          $("#map .ol-zoom")
+            .css("margin-left", 0)
+            .removeClass("zoom-top-opened-sidebar")
+            .addClass("zoom-top-collapsed");
+        } else {
+          $("#map .ol-zoom")
+            .css("margin-left", $(".sidebar-left").width())
+            .removeClass("zoom-top-opened-sidebar")
+            .removeClass("zoom-top-collapsed");
+        }
+      }
+
+
+      function isConstrained() {
+        return $(".sidebar").width() == $(window).width();
+      }
+
+      function applyInitialUIState() {
+        if (isConstrained()) {
+          $(".sidebar-left .sidebar-body").fadeOut('slide');
+          $('.mini-submenu-left').fadeIn();
+        }
+      }
+
+      $(function(){
+        $('.sidebar-left .slide-submenu').on('click',function() {
+          var thisEl = $(this);
+          thisEl.closest('.sidebar-body').fadeOut('slide',function(){
+            $('.mini-submenu-left').fadeIn();
+            applyMargins();
+          });
+        });
+
+        $('.mini-submenu-left').on('click',function() {
+          var thisEl = $(this);
+          $('.sidebar-left .sidebar-body').toggle('slide');
+          thisEl.hide();
+          applyMargins();
+        });
+      $('#properties').on('hidden.bs.collapse', function() { 
+  $('#ch-up').toggleClass('fa-chevron-up', false) 
+  $('#ch-up').toggleClass('fa-chevron-down', true)
+})
+
+$('#properties').on('shown.bs.collapse', function() { 
+  $('#ch-up').toggleClass('fa-chevron-up', true) 
+  $('#ch-up').toggleClass('fa-chevron-down', false)
+})
+
+        $(window).on("resize", applyMargins);
+        applyInitialUIState();
+        applyMargins();
+      });
+
+    </script>
+  </head>
+  <body data-no-turbolink>
+    <div class="container">
+  <% if flash[:notice] || flash[:error] %>
+    <div class='notifications top-right'></div>
+  <% end %>
+      <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">  <img src="images/G4Logo_CMYK.png" class="smlogo"/>    </a>
+          </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li> 
+          <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#organisations-modal">NGO List</a>     
+              </li>
+         <!--      <li> 
+          <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#ngos-modal">Organization List</a>     
+              </li>
+           -->   
+                </ul>
+              </li>
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input id="searchinput" type="text" class="form-control" placeholder="Search">
+              </div>
+              <button id="searchsubmit" type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">  
+            <li> 
+            <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#report-modal">Report Bug </a>
+            </li>
+               <li>
+          <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#about-modal">About</a>       
+               </li>
+                <li>    
+               <% if current_user && current_user.doctor? %>
+                <%= link_to 'User Profile'.html_safe, edit_doctor_path(current_user.doctor.id) %>          
+            <% end %>
+            <% if user_signed_in? %>
+             <ul class="nav navbar-nav navbar-right" style="margin-right:4px;">     
+                <li>    
+          <a href="/doctors" class="dropdown-toggle"> Admin </a>
+           </li>
+           <li>
+           <%= link_to ' Sign out'.html_safe, destroy_user_session_path, :method => :delete, :class => 'dropdown-toggle' %>
+           </li>
+           </ul>
+            <% else %>   
+          <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#sign-in">Log in</a>
+            <% end %> 
+             </li>          
+            </ul>
+            </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+          </nav>
+        </div>
+      </nav>
+      <div class="navbar-offset"></div>
+       <%= yield %>
+      <div class="row main-row">
+      <% if browser.device.mobile? || browser.device.ipad? || browser.device.iphone? then
+          accordiondisplay = 'none'
+          rightarrowdisplay = 'block' 
+         else
+          accordiondisplay = 'block'
+          rightarrowdisplay = 'none' 
+         end
+
+        %>
+        <div class="col-sm-4 col-md-3 sidebar sidebar-left pull-left">
+          <div class="panel-group sidebar-body" id="accordion-left" style="display:<%= accordiondisplay %>">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" href="#layers">
+                   <img style="width:26px;height:26px;margin-left:-6px;margin-top:-5px;" src="images/modernuiicons/svg/appbar.globe.wire.svg" />Heat Maps
+                  </a>
+                   <span class="pull-right mini-submenu slide-submenu">
+                 <i class="fa fa-chevron-left"></i>
+                  </span>
+                  <span class="pull-right" style="color:#a49693; margin-right: 3px;"> hide  </span>
+                 
+                </h4>
+              </div>
+            <div id="layers" class="panel-collapse collapse in">
+                <div class="panel-body list-group">
+                <% if (@stories != nil) then  %>
+                <%  @stories.each do |story| %>
+                <% if (story.title != 'FIRST') then %>
+                <% if (story.id == 51) then %>
+      <a href="#" id="<%= story.id %>" class="list-group-item list-story-item active">
+               <% else %>
+       <a href="#" id="<%= story.id %>" class="list-group-item list-story-item">
+               <%  end %>
+             <img style="width:26px;height:26px" src="<%= story.iconclass %>" />        
+                      <%= story.title %>
+                  </a>
+              <%  end %>
+              <%  end %>
+              <%  end %>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" href="#properties">
+                    <i class="fa fa-list-alt"></i>
+                    Context
+                  </a>
+                   <a data-toggle="collapse" href="#properties">
+                  <span class="pull-right mini-submenu-context slide-submenu-context">
+                   <i class="fa fa-chevron-up" id="ch-up"></i>
+                  </span>
+                  </a>
+                </h4>
+              </div>
+              <div id="properties" class="panel-collapse collapse in">
+                <div class="panel-body">
+                   <% if (@stories != nil) then  %>
+                <%   @stories.each_with_index do |story, index| %>
+                 
+                <%  if story.id == 11 then %>  
+                  <div id="story_<%= story.id %>" class="stories">
+                <%  else %>
+                  <div id="story_<%= story.id %>" class="stories hide-story">
+
+                <%   end %>
+                   <%=raw story.story %>
+                  </div>
+               <%   end %>
+              <%   end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       <div class="mini-submenu mini-submenu-left pull-left" style="display:<%= rightarrowdisplay %>; width:6vw; ">
+       <span   style="color:#a49693; margin-right:3px; "> expand  </span> 
+      
+      <i class="fa fa-chevron-right"></i>
+       
+      </div>
+    </div>
+       <div id="footer" align="left">
+    <div class="left">
+      <div class="container" align="left" >
+        <p id="footer-links" style="margin-top:5px;"> 
+        <a href="/privacy">Privacy</a>
+        <a href="/contact">Contact us</a>
+        <a href="/about">About </a>
+        </p>
+      </div>
+        </div>
+    </div>
+<!-- <div id="page-wrapper"> -->
+  <% if flash[:notice] %>
+    <div class="alert alert-success">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+  <% if flash[:alert] %>
+    <div class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <% flash[:alert] %>
+    </div>
+  <% end %>
+<!-- </div> -->
+<!-- /#page-wrapper -->
+
+   <!-- Organisations Modal -->
+  <div class="modal fade" id="organisations-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+        <div class="orgs-list">
+        <span> NGO List </span> 
+        </div>
+        <div class="nopadding training-icon-container">
+       <img src="images/t.png" class="ticontcenter"/>    
+        </div>
+        <div class="tr-center">Training Center</div>
+        <div class="close-container">
+          <button type="button" class="close" data-dismiss="modal">           
+           <img src="images/x.png" class="xclose"/>        
+           <span class="sr-only">Close</span>
+          </button>
+          </div>
+            </div>
+        <div class="modal-body nopadding">
+      <div class="ngo-list-div" style="overflow-y:scroll; height:400px; ">
+          <div class="org-list-header col-md-12 nopadding" >
+          <div class="col-md-1 col-sm-1 col-xs-1  nopadding"></div>
+          <div class="col-md-8 col-sm-8  col-xs-8  organisation-name nopadding">Name</div>
+          <div class="col-md-2 col-sm-2 col-xs-2 country-name nopadding">Country</div>
+        </div>
+            <% if (@organisations != nil) then  %>
+                <%   @organisations.each do |organisation| %>
+        <div id="org_<%= organisation[0] %>" class="col-md-12 col-sm-12 col-xs-12 org-list-item nopadding" data-org="<%= organisation[0] %>"  data-longitude="<%= organisation[5] %>" data-latitude="<%= organisation[6] %>">
+        <div class="col-md-1 col-sm-1 col-xs-1  nopadding">
+        <% if organisation[4] == 'y' then %>
+        <div class="nopadding training-icon-container-item">
+        <img src="images/t.png" class="ticon"/>        
+        </div>
+        <% end %>
+                  </div>
+              <div class="col-md-8 col-sm-8 col-xs-8 organisation-name  nopadding" >
+                   <% if organisation[1].length > 53  %>
+                   <% orgshort = organisation[1][0..53] + "..." %>
+                   <% else %>
+                   <% orgshort = organisation[1] %> 
+                   <% end %>      
+                  <%= orgshort  %>  
+              </div> 
+                <div id="org_<%= organisation[0] %>" class="col-md-2 col-sm-2 col-xs-2 country-name  nopadding">
+                   <%=  organisation[13] %>        
+                  </div>
+      <div class="col-md-1 col-sm-1 col-xs-1 nopadding chevron organisation-chevron">
+                   <img src="images/rarr.png" class="rightarrow nodisplay"/> 
+      </div> 
+        </div>
+          <% end %>
+          <% end %>             
+        </div>
+       
+  <div class="ngo-details-div" style="overflow-y:scroll; height:400px;">
+  <div class="back-to-ngos"> 
+ <b><i class="fa fa-chevron-left"></i> Back </b>
+  </div>
+
+ <div class="ngo-details">
+ <div class="col-md-12 organization_name"> </div>
+  <div class="col-md-2"> <b> Address: </b> </div> 
+ <div class="col-md-10 hq_address"> </div>
+ <div class="col-md-3"> <b> Contact person: </b> </div> 
+ <div class="col-md-9 person_name"> </div>
+ <div class="col-md-3"> <b> Contact e-mail: </b> </div> 
+ <div class="col-md-9 contact_email"> </div>
+  <div class="col-md-2"> <b> Mission: </b> </div> 
+ <div class="col-md-10 mission"> </div>
+</div>
+ </div>
+
+        </div>
+         </div>
+      </div>
+    </div>
+
+  <%= 
+  # render "shared/organisations_modal" 
+  %> 
+
+   <!-- Ngos By Country Modal -->
+  <div class="modal fade" id="ngos-bycountry-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+        <div id="org-list-title" class="orgs-list" style="width:85%">
+        <span>  </span> 
+        </div>
+        <div class="close-container">
+          <button type="button" class="close" data-dismiss="modal">           
+           <img src="images/x.png" class="xclose"/>        
+           <span class="sr-only">Close</span>
+          </button>
+          </div>
+            </div>
+  <div class="modal-body nopadding">
+  <div class="ngo-list-div" style="overflow-y:scroll; height:400px;">
+  <div class="org-list-header col-md-12 col-sm-12 col-xs-12 nopadding">
+  <div class="col-md-6 col-sm-6 col-xs-6  ngo-name nopadding">Name</div>
+  <div class="col-md-5 col-sm-5 col-xs-5 ngo-website nopadding">Websites</div>
+        </div>
+          <div id="orgs-list-for-country-body"></div>  
+        </div>
+
+ <div class="ngo-details-div" style="overflow-y:scroll; height:400px;">
+  <div class="back-to-ngos"> 
+ <b><i class="fa fa-chevron-left"></i> Back </b>
+  </div>
+
+ <div class="ngo-details">
+ <div class="col-md-12 organization_name"> </div>
+  <div class="col-md-2"> <b> Address: </b> </div> 
+ <div class="col-md-10 hq_address"> </div>
+ <div class="col-md-3"> <b> Contact person: </b> </div> 
+ <div class="col-md-9 person_name"> </div>
+ <div class="col-md-3"> <b> Contact e-mail: </b> </div> 
+ <div class="col-md-9 contact_email"> </div>
+  <div class="col-md-2"> <b> Mission: </b> </div> 
+ <div class="col-md-10 mission"> </div>
+</div>
+ </div>         
+        </div>
+
+
+         </div>
+      </div>
+    </div>   
+
+     <!-- Seearch Modal -->
+  <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-labelledby="search-modal" aria-hidden="true">
+       <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+        <div class="orgs-list">
+        <span> Search Results </span> 
+        </div>
+     <!--    <div class="nopadding training-icon-container">
+       <img src="images/t.png" class="ticontcenter"/>    
+        </div>
+        <div class="tr-center">Training Center</div> -->
+        <div class="close-container">
+          <button type="button" class="close" data-dismiss="modal">           
+           <img src="images/x.png" class="xclose"/>        
+           <span class="sr-only">Close</span>
+          </button>
+          </div>
+            </div>
+        <div class="modal-body nopadding">
+        <div class="ngo-list-div" style="overflow-y:scroll; height:400px; ">
+          <div class="org-list-header col-md-12 nopadding" >
+          <div class="col-md-1 col-sm-1 col-xs-1  nopadding"></div>
+          <div class="col-md-8 col-sm-8  col-xs-8  organisation-name nopadding">Name</div>
+          <div class="col-md-2 col-sm-2 col-xs-2 country-name nopadding">Location</div>
+        </div>
+         <div id="search-results" >
+        </div>
+        </div>
+
+              <div class="ngo-details-div" style="overflow-y:scroll; height:400px;">
+  <div class="back-to-ngos"> 
+ <b><i class="fa fa-chevron-left"></i> Back </b>
+  </div>
+
+ <div class="ngo-details">
+ <div class="col-md-12 organization_name"> </div>
+  <div class="col-md-2"> <b> Address: </b> </div> 
+ <div class="col-md-10 hq_address"> </div>
+ <div class="col-md-3"> <b> Contact person: </b> </div> 
+ <div class="col-md-9 person_name"> </div>
+ <div class="col-md-3"> <b> Contact e-mail: </b> </div> 
+ <div class="col-md-9 contact_email"> </div>
+  <div class="col-md-2"> <b> Mission: </b> </div> 
+ <div class="col-md-10 mission"> </div>
+</div>
+ </div>
+
+        </div>
+
+
+         </div>
+      </div>
+    </div>
+
+
+<%= render "shared/stats_modal" %> 
+<%= render "shared/sign_in_modal" %>
+  <!-- First Page Modal -->
+  <div class="modal fade" id="welcome-modal" tabindex="-1" role="dialog" aria-labelledby="welcome-modal" aria-hidden="true"  >
+       <div class="modal-dialog" style="background-color:#f8f8f8;">
+      <div class="modal-content" style="background-color:#f8f8f8;">
+    <div class="close-container">
+        <button type="button" class="close" data-dismiss="modal" style="padding-right: 0.6vw">           
+           <img src="images/x.png" class="xclose">        
+           <span class="sr-only">Close</span>
+          </button>  
+          </div>
+        <div class="modal-body nopadding">
+          <div style="height:550px; " align="center">
+        <div  class="welcome-modal-image-container" align="center" >
+        <div id="logo-blue" align="center">
+          <img src="images/g4logo.png" style="width:200px;" />
+        </div>
+        </div>
+        <div  class="welcome-modal-text-container" align="center">
+          <p> This National Surgical Planning platform is intended to provide a resource for stakeholders around the world to support national surgical systems strengthening through collaboration and cross-disciplinary engagement.</p>
+          <p>We would like to acknowledge the SurgeonWorkforce project for their support and for developing an open source platform that will help key stakeholders deliver surgical, obstetric, trauma, and anaesthesia care in areas where the need is greatest.</p>
+          <p> 
+        <button type="button" id="viewmapbutton" class="btn btn-default">
+  <span aria-hidden="true">View Map</span>
+</button>
+  <div style="margin-top:40px;margin-right:8%;">
+<div class="logo-container-inline" align="center">
+          <a href="http://essentialsurgery.com"  target="_blank" >
+          <img src="images/COSECSA.png" class="logo-inline-120"  />
+          </a> 
+         </div>
+          <div class="logo-container-inline" align="center">
+          <a href="http://essentialsurgery.com"  target="_blank" >
+          <img src="images/ices.png" class="logo-inline-120" />
+          </a> 
+         </div>
+         <div class="logo-container-inline" align="center">
+          <a href="http://essentialsurgery.com"  target="_blank" >
+         <img src="images/RCSI_LOGO_COLOR.png" class="logo-inline-200"  />
+          </a> 
+         </div>
+   </div>
+          </p>
+        </div>
+        </div>
+        </div>
+         </div>
+      </div>
+    </div>
+
+   <%= render "shared/about_modal" %>  
+
+     <!-- Report Bug  Modal -->
+     <div class="modal fade" id="report-modal" tabindex="-1" role="dialog" aria-labelledby="search-modal" aria-hidden="true">
+       <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+        <div class="orgs-list">
+        <span> Report Bug </span> 
+        </div>
+        <div class="close-container">
+          <button type="button" class="close" data-dismiss="modal">      
+           <img src="images/x.png" class="xclose"/>        
+           <span class="sr-only">Close</span>
+          </button>
+          </div>
+            </div>
+        <div class="modal-body nopadding">
+          <div class="nopadding" style="height:310px; ">
+          <div class="org-list-header col-md-12 col-sm-12 col-xs-12 nopadding" align="center">
+           Your feedback is extremely important to us
+           </div>  
+         <%= render "bugs/form" %>   
+        </div>
+        </div>
+         </div>
+      </div>
+    </div>
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+  $('#welcome-modal').modal('show');
+  $('#viewmapbutton').on('click', function(e) { 
+  $('#welcome-modal').modal('hide');
+ })
+
+   $('.back-to-ngos').on('click', function(e) { 
+  
+ $('.ngo-details-div').animate({  left:'120%' })
+ }) 
+
+
+  $('#searchsubmit').on('click', function(e) { 
+  $('#search-modal').modal('show');
+
+
+
+
+
+    e.preventDefault();
+     var key = $('#searchinput').val();
+
+  if (key.length < 1) return; 
+    $('#search-results').html('<img src="images/ajax-loader.gif" style="margin-top:30%;margin-left:50%"/>');
+    var jsondata = { "key" : key }
+    $.ajax({
+     url: "/searchorgs.json", 
+     dataType: 'json',
+     data: jsondata,
+     contentType: "application/json; charset=utf-8",
+    success: function(data) {  
+      console.log(data)
+     jsn = data
+      var htm = '';
+   for(i = 0 ; i<jsn.length; i++) {
+
+   htm+= '<div id="org_' + jsn[i][0] + '" class="col-md-12 col-sm-12 col-xs-12 org-list-item nopadding" data-longitude="' +jsn[i][5]+'" data-latitude="'+jsn[i][6]+'" data-org="'+jsn[i][0]+'"><div class="col-md-1 col-sm-1 col-xs-1  nopadding">'
+         if (jsn[i][4] == 'y') {
+     htm+=   '<div class="nopadding training-icon-container-item">' 
+     htm +=  '<img src="images/t.png" class="ticon"/></div>' }
+
+    htm += '</div><div class="col-md-7 col-sm-7 col-xs-7 organisation-name  nopadding" >'
+     htm +=   jsn[i][1] + '</div><div id="org_' + jsn[i][0]+'" class="col-md-4 col-sm-4 col-xs-4 country-name nopadding">' +  jsn[i][12] + ', ' + jsn[i][13] + '</div><div class="col-md-1 col-sm-1 col-xs-1 nopadding chevron organisation-chevron"><img src="images/rarr.png" class="rightarrow nodisplay"/></div></div>'
+    }
+
+    if (jsn.length == 0 ) { htm = '<div style="margin-top:100px;" align="center"> No search results. </div>'}
+
+    $('#search-results').html(htm);
+    }, 
+    error:  function(err) {  console.log(err)
+    $('#search-results').html('<div style="margin-top:30%;margin-left:50%"/>  No Hospitals Found</div>');
+     }
+})
+  })
+
+  $("#search-modal, #organisations-modal, #ngos-bycountry-modal, #ngos-modal").on( 'mouseover', '.org-list-item', function() { 
+  $(this).toggleClass('list-item-hover', true);
+  $(this).find('.chevron').find('img').toggleClass('nodisplay', false)
+ })
+
+  $("#search-modal, #organisations-modal, #ngos-bycountry-modal, #ngos-modal").on( 'mouseout', '.org-list-item', function() { 
+  $(this).toggleClass('list-item-hover', false)
+  $(this).find('.chevron').find('img').toggleClass('nodisplay', true)
+ })
+
+   $("#ngos-bycountry-modal, #ngos-modal").on( 'click', '.org-list-item', function() { 
+  var link = $(this).attr('data-href')
+ // window.open(link, '_blank');
+
+  
+ 
+
+ })
+
+  $("#search-modal, #ngos-bycountry-modal, #organisations-modal").on( 'click', '.org-list-item', function() { 
+    var did = $(this).attr('data-org');
+   // alert(did)
+    var lat =  parseFloat($(this).attr('data-latitude'));
+    var lon =  parseFloat($(this).attr('data-longitude'));
+    var id  = $(this).find('.organisation-name').html();
+    jsondata = { 'id' : did }
+     var $t = $(this);
+     $(this).parent().parent().parent().find('.ngo-details-div').animate({ left:'120%' })
+
+    $.ajax({
+     url: "/getngodetails.json", 
+     dataType: 'json',
+     data: jsondata,
+     contentType: "application/json; charset=utf-8",
+    success: function(data) { 
+
+      populateNgoDetails(data)
+
+        e = $t.parent().parent().parent().find('.ngo-details-div') 
+       console.log('object >>')
+       console.log(e)
+      $(e).animate({ left:'0%' })
+     console.log(data)
+    }, 
+    error:  function(err) { 
+     console.log(err)
+     console.log("not ok") 
+     }
+})
+
+  /*  docsPerOrganization(lon,lat, id);
+    $('#organisations-modal').modal('hide');
+    $('#search-modal').modal('hide');
+    $('.navbar-collapse').collapse('toggle'); */
+
+
+
+ })
+
+
+  function populateNgoDetails(data) { 
+
+   $('.organization_name').html('Details for ' + data.organization_name)
+       $('.hq_address').html(data.hq_address)
+       $('.ngotype').html(data.ngottpe)
+       $('.mission').html(data.mission)
+       $('.person_name').html(data.name + ", " + data.person_role)
+       $('.contact_email').html(data.contact_email)
+   
+      
+
+  }
+
+   $(":root").on( 'click', '.surgeon-tooltip', function() { 
+    var did = $(this).attr('id');
+    var lat =  parseFloat($(this).attr('data-latitude'));
+    var lon =  parseFloat($(this).attr('data-longitude'));
+    var id  = $(this).find('.organisation-name').html();
+    docsPerOrganization(lon,lat, did);
+  
+ })
+   
+  $(".list-story-item").on( 'click', function() {
+   
+    var linkid = $(this).attr('id')  
+    $('.stories').toggleClass('hide-story', true)
+    $('#story_' + linkid).toggleClass('hide-story', false)
+    $(district).css('display', 'none')
+       
+  if($(this).attr('id') == '1' || $(this).find(0).attr('id') == '1' )
+ {   
+    densitystate = true
+    hospitalsstate = false
+    genderstate = false
+      switchMap(densitymap)
+    if (zoom<=4)  totalDocsOverlay();
+    else totalDocsPerDistrictOverlay();
+
+    if (totalDocsPerCountryTrigerred) { applyMaplogic(true); 
+console.log('totalDocsPerCountryTrigerred >>' + totalDocsPerCountryTrigerred)
+
+    }
+   else if(totalDocsPerDistrictTrigerred)  {
+    applyMaplogic(true);
+console.log('totalDocsPerDistrictTrigerred >>' + totalDocsPerDistrictTrigerred)   
+     }
+ }
+ 
+  if($(this).attr('id') == '11' ||  $(this).find(0).attr('id') == '11' ) 
+ {  densitystate = false
+    hospitalsstate = true
+    genderstate = false
+      // "Click here to find specific locations of Surgeons and Hospitals.
+      switchMap(densitymap)
+      resetVerticalMenu() 
+      applyMaplogic();
+  if (totalHospitalsTrigerred) applyMaplogic(true);
+     $('#checkboxes-density').hide();
+     $('#sidebar-two').show();
+   /*  $('#sidebar-two').qtip('toggle');  */
+
+
+ }
+
+  if($(this).attr('id') == '21' || $(this).find(0).attr('id') == '21' ) 
+ {  
+    densitystate = false
+    hospitalsstate = false
+    genderstate = true
+      resetVerticalMenu() 
+       switchMap(gendermap)  
+       applyMaplogic();
+       $('#checkboxes-density').hide();
+       $('#sidebar-two').show();
+    /*   $('#sidebar-two').qtip('toggle');*/
+ }
+
+  if($(this).attr('id') == '51' || $(this).find(0).attr('id') == '51' ) 
+ {    densitystate = false
+    hospitalsstate = false
+    genderstate = false
+      source = blankmap;
+       switchMap(blankmap)
+       applyMaplogic()
+       $('#checkboxes-density').hide();
+       $('#sidebar-two').hide();
+ }
+   if($(this).attr('id') == '41' || $(this).find(0).attr('id') == '41' ) 
+ {    densitystate = false
+    hospitalsstate = false
+    genderstate = false
+      source = ngosmap;
+       switchMap(ngosmap)
+       applyMaplogic()
+       
+       $('#checkboxes-density').hide();
+       $('#sidebar-two').hide();
+ }
+   });
+ 
+function resetVerticalMenu() { 
+
+if($(".hospitals").is(":visible")) {
+    totalHospitalsTrigerred = false;
+    totalDocsPerDistrictTrigerred = false;    
+    totalHospitalsTrigerrable = false;
+    organisationsTrigerrable = false; 
+     $(".hospitals").hide();
+     $(".specsubmenu-hospitals").hide();
+     $(".checkboxes-hospitals").hide();  
+      }
+
+   if($(".doctors").is(":visible")) {
+      totalDocsPerCountryTrigerred = false;
+      totalDocsPerDistrictTrigerred = false;
+      totalDocsPerCountryTrigerrable = true;
+      totalDocsPerDistrictTrigerrable = true;
+      densitystate = false;
+     $(".doctors").hide();
+     $(".specsubmenu").hide();
+     $(".checkboxes").hide();  
+}    
+
+}
+
+
+
+  $("[name='stoggle']").iCheck({
+    checkboxClass: 'icheckbox_flat-red',
+    radioClass: 'iradio_flat-red'
+  });
+
+    $("[name='stoggle-globaldensity']").iCheck({
+    checkboxClass: 'icheckbox_flat-red',
+    radioClass: 'iradio_flat-red'
+  });
+
+   $("[name='stoggle']").on('ifChanged', function(event){ 
+
+     if($(this).hasClass('hospcbx')) {
+   if(zoom > 0 && zoom <=5) { 
+        totalHospitalsPerCountry()   
+   }
+ }
+ else if(['global-surgeons','global-obstetricians','global-anesthesiologists'].indexOf($(this).attr('id')) > -1)
+{ 
+   applyMaplogic();
+ }
+ else  { 
+  if(zoom > 0 && zoom <=5) { 
+      totalDocsPerCountry() 
+   }
+ }
+}); 
+
+   $("[name='stoggle-globaldensity']").on('ifChanged', function(event){ 
+   
+ 
+});
+
+
+});  
+
+function projectedDensityLegendText() { 
+ 
+  ary = []
+   lgd= 'Projected density of '
+     $('#global-surgeons:checked').length > 0 ?  ary.push('Surgeons') : lgd +=''
+   var y = $('#global-obstetricians:checked').length > 0 ?  ary.push('Obstetricians') : lgd += ''
+   var z = $('#global-anesthesiologists:checked').length > 0 ?  ary.push('Anesthesiologists')  : lgd +=''
+
+   var restofthetext = ary.join(', ')
+   lgd += restofthetext
+   $('#legend').find('strong').html(lgd)
+}
+
+
+$("#reportbugbutton").on('click', function() { 
+      $('#bugreportstatus').html('');
+  //  var title = $("#bug_title").val()
+ //   var name = $("#bug_name").val()
+    var bugtext = $("#bug_text").val()
+    var email = $("#bug_email").val()
+    bugtext += "<div>Zoom level:"+  zoom +"</div>"
+    bugtext += "<div>Hospitals view:"+  hospitalsstate +"</div>"
+    bugtext += "<div>Surgeon Density view:"+  densitystate +"</div>"
+    bugform = {}
+     bugform['bug'] = {}
+   // bugform['bug']['title'] = title
+   // bugform['bug']['name'] = name
+    bugform['bug']['text'] = bugtext
+    bugform['bug']['email'] = email
+    bugData = JSON.stringify(bugform)
+  /*  if(title.length < 3) {  $('#bugreportstatus').html('You must write a title.'); 
+    return; }
+     if(email.length < 3) {  $('#bugreportstatus').html('You must write your e mail.');  
+    return
+      } */
+      if(bugtext.length < 100) {  $('#bugreportstatus').html('You must write a description of at least 50 characters.'); 
+    return; }
+   
+  $.ajax({
+    url: "/bugs/create.json", 
+    dataType: 'json',
+    method: 'POST',
+    contentType: "application/json; charset=utf-8",
+    data: bugData,
+    success: function(data) {   
+       if (parseInt(data.id) > 0) $('#bugreportstatus').html('Bug sent succesfully.');
+     $("#bugreportform").find("input[type=text], textarea").val("");
+
+    }, 
+    error:  function(err) { 
+     console.log(err) 
+      $('#bugreportstatus').html('There was an error. Bug  not sent.');
+   }
+});
+ });
+
+
+$('#report-modal').on('hidden.bs.modal', function () {
+      $('#bugreportstatus').html('');
+});
+var ISO3 = null;
+function switchMap(src) {        
+ source = src;
+       center = map.getCenter()           
+       map.remove();
+       map = L.mapbox.map('map',  source, { zoomControl:false,  doubleClickZoom: false, maxZoom: 10,  minZoom: 1  }).setView(center, zoom).on('ready', function() {
+      map.maxZoom = 10;
+      // map._layersMaxZoom = 22;
+    });
+
+ 
+      new  L.Control.Zoom( { position: 'bottomright' } ).addTo(map);     
+        // map.doubleClickZoom.disable();  
+           map.touchZoom.enable();
+         if (map.tap) map.tap.disable();
+    //    map.scrollWheelZoom.disable();
+       setZoom(map);
+
+}
+
+      </script>
+<script>
+  $('.top-right').notify({
+    message: { text: '<%= flash[:notice] ? flash[:notice] : flash[:error] %>' }
+  }).show(); // for the ones that aren't closable and don't fade out there is a .hide() function.
+ $(document).ready(function(){
+    $('#sidebar-two').qtip({ 
+          // Grab some elements to apply the tooltip to
+    content: {
+        text: 'Click here to find specific locations of Surgeons and Hospitals.',
+            title: {
+                text: 'Tip',
+                button: false
+            } 
+    }, 
+    position: {
+         my: 'right',
+         at:'top'
+       },
+     style: {
+        classes: 'qtip-youtube qtip-zindex'
+    },  
+     show: {
+            event: false,
+            ready: true,
+            effect: function() {
+                $(this).stop(0, 1).animate({ height: 'toggle' }, 400, 'swing');
+            }
+          }  ,
+         hide: {
+        event: false,
+        inactive: 15000,
+            effect: function(offset) {
+            $(this).slideDown(500); // "this" refers to the tooltip
+        }
+    }
+
+   });
+
+  })
+
+</script>
+  </body>
+</html>

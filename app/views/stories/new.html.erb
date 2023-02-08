@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">New Story</h1>
+  </div>
+<!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Story Details
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-8">
+            <%= form_for @story do |st| %>
+              <div class="row">
+                <div class="col-md-8 form-group">
+                  <%= st.label "Title" %>
+                  <%= st.text_field :title, class: "form-control" %> 
+                </div>       
+                <div class="col-md-8 form-group">
+                   <%= st.label "Story" %>
+                 <%= st.text_area :story, :class => "tinymce", :rows => 8, :cols => 120 %>
+                   <%= tinymce %>
+                </div>
+                <div class="col-md-6 form-group">
+                  <%= st.label "Icon Class" %>
+                  <%= st.text_field :iconclass, class: "form-control" %> 
+                </div>
+              </div>
+
+              </div>
+              <div class="form-group">
+               <div class="col-md-12 form-group">
+              <%= st.submit "Create", class: "btn btn-primary" %>
+              <button type="reset" class="btn btn-danger">Reset Changes</button>
+              </div>
+              <% end %>
+            </div>
+            <!-- /.col-lg-6 (nested) -->
+          </div>
+          <!-- /.row (nested) -->
+        </div>
+        <!-- /.panel-body -->
+      </div>
+      <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+  </div>
+  <!-- /.row -->
+
+
+ 

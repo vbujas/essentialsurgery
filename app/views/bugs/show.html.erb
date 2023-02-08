@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @bug.title %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @bug.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @bug.email %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @bug.text %>
+</p>
+
+<%= link_to 'Edit', edit_bug_path(@bug) %> |
+<%= link_to 'Back', bugs_path %>

@@ -1,0 +1,122 @@
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Import From google Sheets</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+     
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body">
+        <div class="table-responsive">
+
+        <table class="table">
+        <thead> 
+        <tr>
+        </tr>
+        </thead>
+        <tbody>
+         <tr>
+         <td> Table Cities </td>
+         <td> <button class="btn btn-info" data-tablename="cities"> Import Cities </button> </td>
+         <td id="citiesinfo">  </td>
+         </tr>
+            <tr>
+         <td> Table countries </td>
+         <td> <button class="btn btn-info" data-tablename="countries"> Import Countires </button> </td>
+         <td id="countriesinfo">  </td>
+         </tr>
+            <tr>
+         <td> Table specialties </td>
+         <td> <button class="btn btn-info" data-tablename="specialties"> Import Specialties</button> </td>
+         <td id="specialtiesinfo">  </td> 
+         </tr>
+         <tr>
+         <td> Table districts </td>
+         <td> <button class="btn btn-info" data-tablename="districts"> Import Districts </button> </td>
+         <td id="districtsinfo">  </td> 
+         </tr>
+         <tr>
+         <td> Table organizations (Hospitals) </td>
+         <td> <button class="btn btn-info" data-tablename="organisations"> Import Hospitals </button> </td>
+         <td id="organisationsinfo">  </td> 
+         </tr>
+         <tr>
+         <td> Table doctors </td>
+         <td> <button class="btn btn-info" data-tablename="doctors"> Import doctors </button> </td>
+         <td id="doctorsinfo">  </td> 
+         </tr>
+         </tbody>
+      
+       
+   
+      <p>
+
+      </p>
+        </div>
+        <!-- /.table-responsive -->
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<script>
+$(document).ready(function(){
+
+  $('body').tooltip({
+    selector: '[data-toggle="tooltip"]'
+});
+     
+ });
+</script>
+
+<script type="text/javascript">
+
+  
+$( function() { 
+
+$('.btn').on('click', function() { 
+
+tbl= $(this).attr('data-tablename')
+ messagecell = $('#'+tbl+'info')
+  
+ $(messagecell).html('<i class="loading-icon"> </i>') 
+tablearr = { drive: { table : tbl }}
+ tjsn = JSON.stringify(tablearr)
+$.ajax({
+     url: "/import", 
+     dataType: 'json',
+     method: 'POST',
+     data: tjsn,
+     contentType: "application/json; charset=utf-8",
+    success: function(data) { 
+
+      errortext = data.errors.join(', <br>   ')
+
+      html = data.message + '. <br/> <a href="#" data-toggle="tooltip" title="' + errortext+ '">' + data.errors.length +' errors</a>'
+
+      $(messagecell).html(html)
+  }, 
+    error:  function(err) { 
+       $(messagecell).html(err.message)
+
+      }
+})
+
+
+});
+
+})
+
+</script>

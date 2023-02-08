@@ -1,0 +1,10 @@
+class CreateCountriesCodes < ActiveRecord::Migration
+  def change
+    create_table :countries_codes do |t|
+      t.string :country_code
+      t.string :country_name
+      
+      t.timestamps
+    end
+  end
+end

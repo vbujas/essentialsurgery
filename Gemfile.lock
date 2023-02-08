@@ -1,0 +1,283 @@
+GIT
+  remote: git://github.com/ctran/annotate_models.git
+  revision: 06607bea8146d95dbb6c67049e1fd3255dd8eab8
+  tag: v2.6.5
+  specs:
+    annotate (2.6.5)
+      activerecord (>= 2.3.0)
+      rake (>= 0.8.7)
+
+GIT
+  remote: git://github.com/evrone/quiet_assets.git
+  revision: d29e18725361868db1c8acf3f4155df3dbe75022
+  tag: v1.0.3
+  specs:
+    quiet_assets (1.0.3)
+      railties (>= 3.1, < 5.0)
+
+GIT
+  remote: git://github.com/heroku/rails_12factor.git
+  revision: 4f8ee68f16694108a01d08a7b74346d2b061461f
+  branch: master
+  specs:
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+
+GIT
+  remote: git://github.com/plataformatec/devise.git
+  revision: df43a3560a8aa44f052cb7deb7096413b5013a88
+  branch: master
+  specs:
+    devise (4.6.2)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
+
+GIT
+  remote: git://github.com/preston/railroady.git
+  revision: ec476b9b18275fa8fbc610d23e45cccd61fe3fc8
+  branch: master
+  specs:
+    railroady (1.5.3)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    actionmailer (4.1.7)
+      actionpack (= 4.1.7)
+      actionview (= 4.1.7)
+      mail (~> 2.5, >= 2.5.4)
+    actionpack (4.1.7)
+      actionview (= 4.1.7)
+      activesupport (= 4.1.7)
+      rack (~> 1.5.2)
+      rack-test (~> 0.6.2)
+    actionview (4.1.7)
+      activesupport (= 4.1.7)
+      builder (~> 3.1)
+      erubis (~> 2.7.0)
+    activemodel (4.1.7)
+      activesupport (= 4.1.7)
+      builder (~> 3.1)
+    activerecord (4.1.7)
+      activemodel (= 4.1.7)
+      activesupport (= 4.1.7)
+      arel (~> 5.0.0)
+    activesupport (4.1.7)
+      i18n (~> 0.6, >= 0.6.9)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.1)
+      tzinfo (~> 1.1)
+    acts-as-taggable-on (4.0.0)
+      activerecord (>= 4.0)
+    addressable (2.6.0)
+      public_suffix (>= 2.0.2, < 4.0)
+    arel (5.0.1.20140414130214)
+    bcrypt (3.1.13)
+    browser (2.6.1)
+    builder (3.2.3)
+    cancancan (3.0.1)
+    capybara (2.18.0)
+      addressable
+      mini_mime (>= 0.1.3)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      xpath (>= 2.0, < 4.0)
+    coffee-rails (4.0.1)
+      coffee-script (>= 2.2.0)
+      railties (>= 4.0.0, < 5.0)
+    coffee-script (2.4.1)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.12.2)
+    commonjs (0.2.7)
+    concurrent-ruby (1.1.5)
+    declarative (0.0.10)
+    declarative-option (0.1.0)
+    erubis (2.7.0)
+    execjs (2.7.0)
+    faraday (0.15.4)
+      multipart-post (>= 1.2, < 3)
+    foreman (0.85.0)
+      thor (~> 0.19.1)
+    google-api-client (0.30.8)
+      addressable (~> 2.5, >= 2.5.1)
+      googleauth (>= 0.5, < 0.10.0)
+      httpclient (>= 2.8.1, < 3.0)
+      mini_mime (~> 1.0)
+      representable (~> 3.0)
+      retriable (>= 2.0, < 4.0)
+      signet (~> 0.10)
+    google_drive (3.0.3)
+      google-api-client (>= 0.11.0, < 0.31.0)
+      googleauth (>= 0.5.0, < 1.0.0)
+      nokogiri (>= 1.5.3, < 2.0.0)
+    googleauth (0.9.0)
+      faraday (~> 0.12)
+      jwt (>= 1.4, < 3.0)
+      memoist (~> 0.16)
+      multi_json (~> 1.11)
+      os (>= 0.9, < 2.0)
+      signet (~> 0.7)
+    hike (1.2.3)
+    httpclient (2.8.3)
+    i18n (0.9.5)
+      concurrent-ruby (~> 1.0)
+    jbuilder (2.6.4)
+      activesupport (>= 3.0.0)
+      multi_json (>= 1.2)
+    jquery-rails (3.1.3)
+      railties (>= 3.0, < 5.0)
+      thor (>= 0.14, < 2.0)
+    jquery-ui-rails (6.0.1)
+      railties (>= 3.2.16)
+    json (1.8.6)
+    jwt (2.2.1)
+    le (2.7.6)
+    less (2.6.0)
+      commonjs (~> 0.2.7)
+    less-rails (4.0.0)
+      actionpack (>= 4)
+      less (~> 2.6.0)
+      sprockets (>= 2)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
+    memoist (0.16.0)
+    mini_mime (1.0.2)
+    mini_portile2 (2.4.0)
+    minitest (5.11.3)
+    multi_json (1.13.1)
+    multipart-post (2.1.1)
+    mysql2 (0.3.17)
+    newrelic_rpm (6.5.0.357)
+    nio4r (2.3.1)
+    nokogiri (1.9.1)
+      mini_portile2 (~> 2.4.0)
+    nokogiri (1.9.1-x86-mingw32)
+      mini_portile2 (~> 2.4.0)
+    orm_adapter (0.5.0)
+    os (1.0.1)
+    public_suffix (3.1.1)
+    puma (4.0.1)
+      nio4r (~> 2.0)
+    rack (1.5.5)
+    rack-test (0.6.3)
+      rack (>= 1.0)
+    rails (4.1.7)
+      actionmailer (= 4.1.7)
+      actionpack (= 4.1.7)
+      actionview (= 4.1.7)
+      activemodel (= 4.1.7)
+      activerecord (= 4.1.7)
+      activesupport (= 4.1.7)
+      bundler (>= 1.3.0, < 2.0)
+      railties (= 4.1.7)
+      sprockets-rails (~> 2.0)
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
+    railties (4.1.7)
+      actionpack (= 4.1.7)
+      activesupport (= 4.1.7)
+      rake (>= 0.8.7)
+      thor (>= 0.18.1, < 2.0)
+    rake (12.3.3)
+    rdoc (4.3.0)
+    representable (3.0.4)
+      declarative (< 0.1.0)
+      declarative-option (< 0.2.0)
+      uber (< 0.2.0)
+    responders (1.1.2)
+      railties (>= 3.2, < 4.2)
+    retriable (3.1.2)
+    sass (3.2.19)
+    sass-rails (4.0.5)
+      railties (>= 4.0.0, < 5.0)
+      sass (~> 3.2.2)
+      sprockets (~> 2.8, < 3.0)
+      sprockets-rails (~> 2.0)
+    sdoc (0.4.2)
+      json (~> 1.7, >= 1.7.7)
+      rdoc (~> 4.0)
+    signet (0.11.0)
+      addressable (~> 2.3)
+      faraday (~> 0.9)
+      jwt (>= 1.5, < 3.0)
+      multi_json (~> 1.10)
+    spring (1.7.2)
+    sprockets (2.12.5)
+      hike (~> 1.2)
+      multi_json (~> 1.0)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
+    sprockets-rails (2.3.3)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      sprockets (>= 2.8, < 4.0)
+    thor (0.19.4)
+    thread_safe (0.3.6)
+    tilt (1.4.1)
+    tinymce-rails (5.0.13)
+      railties (>= 3.1.1)
+    twitter-bootstrap-rails (3.2.2)
+      actionpack (>= 3.1)
+      execjs (>= 2.2.2, >= 2.2)
+      less-rails (>= 2.5.0)
+      railties (>= 3.1)
+    tzinfo (1.2.5)
+      thread_safe (~> 0.1)
+    tzinfo-data (1.2019.2)
+      tzinfo (>= 1.0.0)
+    uber (0.1.0)
+    uglifier (4.1.20)
+      execjs (>= 0.3.0, < 3)
+    warden (1.2.7)
+      rack (>= 1.0)
+    will_paginate (3.0.12)
+    xpath (3.1.0)
+      nokogiri (~> 1.8)
+
+PLATFORMS
+  ruby
+  x86-mingw32
+
+DEPENDENCIES
+  acts-as-taggable-on
+  annotate!
+  bcrypt (~> 3.1.7)
+  browser
+  cancancan
+  capybara
+  coffee-rails (~> 4.0.0)
+  devise!
+  foreman
+  google_drive
+  jbuilder (~> 2.0)
+  jquery-rails (= 3.1.3)
+  jquery-ui-rails
+  le
+  mysql2 (= 0.3.17)
+  newrelic_rpm
+  puma
+  quiet_assets!
+  railroady!
+  rails (= 4.1.7)
+  rails_12factor!
+  sass-rails (~> 4.0.3)
+  sdoc (~> 0.4.0)
+  spring
+  tinymce-rails
+  twitter-bootstrap-rails (~> 3.2)
+  tzinfo-data
+  uglifier (>= 1.3.0)
+  will_paginate (~> 3.0.6)
+
+RUBY VERSION
+   ruby 2.2.4p230
+
+BUNDLED WITH
+   1.15.4

@@ -1,0 +1,113 @@
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  .legend label,
+.legend span {
+  display:block;
+  float:left;
+  height:15px;
+  width:14%;
+  text-align:center;
+  font-size:7px;
+  color:#808080;
+  }
+
+</style>
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+<div id='map'></div>
+<div id='district' style="local-map-tooltip"></div>
+
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoiaGVhdGhlcmphc3BlciIsImEiOiJTRFU1NUlFIn0.aYfcMiKyf03aWG5v-xjCQg';
+var map = L.mapbox.map('map', 'heatherjasper.9op6i529', {
+        attributionControl: false,
+        infoControl:true
+    })
+          .setView([-6.95,36.86], 4)
+           
+     map.addControl(L.mapbox.legendControl());
+    // map.legendControl.addLegend("")
+     var featureLayer = L.mapbox.featureLayer().addTo(map);
+    
+     var featureGroup = L.featureGroup().addTo(map);
+
+// omnivore will AJAX-request this file behind the scenes and parse it:
+// note that there are considerations:
+// - The file must either be on the same domain as the page that requests it,
+//   or both the server it is requested from and the user's browser must
+//   support CORS.
+var runLayer = omnivore.geojson('/COSECA_COUNTRIES.geojson')
+    .on('ready', function() {
+       // map.fitBounds(runLayer.getBounds());
+        // After the 'ready' event fires, the GeoJSON contents are accessible
+        // and you can iterate through layers to bind custom popups.
+        runLayer.eachLayer(function(layer) {
+            // See the `.bindPopup` documentation for full details. This
+            // dataset has a property called `name`: your dataset might not,
+            // so inspect it and customize to taste.
+            //
+            var craw = layer.feature.geometry.coordinates[0]
+                 craw.forEach(function(el, index) { 
+                 lon = el[0]
+                 lat = el[1] 
+                 el[0] = parseFloat(lat) / 100000.0
+                 el[1] = parseFloat(lon) / 100000.0        
+                 }); 
+
+             map.gridLayer.off();
+  map.gridLayer
+    .on('mousemove',function(o) {
+        if (o.data) {
+           if (tempobjectid != o.data.NAME_0) { 
+          var h=''; 
+           mycountry = []; 
+          totaldocs = 0;
+    //  console.log(JSON.stringify(o.data))      
+
+          //  console.log(JSON.stringify(o.data))
+        //  var options = new JsNumberFormatter.formatNumberOptions();
+        //  var estpopuplation = JsNumberFormatter.formatNumber(o.data.est_population, options, true); . 
+          h ='<div class="popup-header">' +    o.data.country  + '<hr class="horizontal-rule" > <span class="icon-i-health-services cross" aria-hidden="true"></span> <div><span class="icon-i-restrooms  bed" aria-hidden="true"></span></div> <div class="td-specialty"> Total Surgeons: </div> <div class="td-number-white"> ' + o.data.nodocs + ' </div> </div> <div class="popup-middle"> Distribution By Gender </div> <div class="popup-content">'; 
+          //table
+
+          h += "<table><tr>"; 
+          h += '<td class="popup-td"> <div class="td-specialty"> Male surgeons </div> <div class="td-number"> ' + o.data.male + ' </div></td>'; 
+            h += '<td class="popup-td"> <div class="td-specialty"> Female surgeons </div> <div class="td-number"> ' + o.data.female + ' </div></td>';           
+          h += '</tr>';         
+            h += '<tr>'; 
+              h += '<td class="popup-td-total" colspan="2"> <div class="popup-total"> <div class="td-specialty"> % of Female Surgeons </div> <div class="td-number-white"> ' + o.data.pctfemale + ' </div></div> <div class="popup-nurse"> <span class="icon-i-care-staff-area nurse" aria-hidden="true"></span></div>   </td>'; 
+
+          h += "</tr></table>"; 
+          h += '</div>';
+          district.innerHTML = h 
+          $('#total_'+o.data.est_population).html(totaldocs)
+          h = ''
+          $(district).css('display', 'block')
+        }
+            tempobjectid = o.data.OBJECTID 
+
+        } else {
+          $(district).css('display', 'none')
+          district.innerHTML = '';
+          tempobjectid = 0;
+        }
+    }).on('mouseout', function(o) {
+        $(district).css('display', 'none')
+        district.innerHTML = '';
+        tempobjectid = 0;
+    });   
+        
+        }); 
+    });
+
+      map.on('draw:created', function(e) {
+      featureGroup.addLayer(e.layer);
+     
+  });
+
+            
+</script>

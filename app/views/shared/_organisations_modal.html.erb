@@ -1,0 +1,66 @@
+    <!-- Ngos Modal -->
+  <div class="modal fade" id="ngos-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+        <div class="orgs-list">
+        <span> Organization List (Global) </span> 
+        </div>
+        <div class="close-container">
+          <button type="button" class="close" data-dismiss="modal">           
+           <img src="images/x.png" class="xclose"/>        
+           <span class="sr-only">Close</span>
+          </button>
+          </div>
+            </div>
+        <div class="modal-body nopadding">
+          <div class="ngo-list-div" style="overflow-y:scroll; height:400px; ">
+          <div class="org-list-header col-md-12 col-sm-12 col-xs-12 nopadding" >
+          <div class="col-md-6 col-sm-6 col-xs-6  organisation-name nopadding">Name</div>
+          <div class="col-md-6 col-sm-6 col-xs-6 country-name nopadding">website</div>
+        </div>
+            <% if (@ngos != nil) then  %>
+                <%   @ngos.each do |ngo| %>
+        <div id="ngo_<%= ngo[0] %>" data-org="<%= ngo[0] %>" data-href="<%= ngo[3] %>" class="col-md-12 col-sm-12 col-xs-12 org-list-item nopadding">
+ 
+              <div class="col-md-5 col-sm-5 col-xs-5 ngo-name  nopadding" >
+                   <% if ngo[1].length > 43  %>
+                   <% orgshort = ngo[1] %>
+                   <% else %>
+                   <% orgshort = ngo[1] %> 
+                   <% end %>      
+                   <%= orgshort  %>  
+              </div> 
+              <div   class="col-md-6 col-sm-6 col-xs-6 ngo-website  nopadding">
+                   <%=  ngo[3][0..43] %>        
+                  </div>
+      <div class="col-md-1 col-sm-1 col-xs-1 nopadding chevron organisation-chevron">
+                   <img src="images/rarr.png" class="rightarrow nodisplay"/> 
+      </div> 
+        </div>
+          <% end %>
+          <% end %>             
+        </div>
+       
+        <div class="ngo-details-div" style="overflow-y:scroll; height:400px;">
+  <div class="back-to-ngos"> 
+ <b><i class="fa fa-chevron-left"></i> Back </b>
+  </div>
+
+ <div class="ngo-details">
+ <div class="col-md-12 organization_name"> </div>
+  <div class="col-md-2"> <b> Address: </b> </div> 
+ <div class="col-md-10 hq_address"> </div>
+ <div class="col-md-3"> <b> Contact person: </b> </div> 
+ <div class="col-md-9 person_name"> </div>
+ <div class="col-md-3"> <b> Contact e-mail: </b> </div> 
+ <div class="col-md-9 contact_email"> </div>
+  <div class="col-md-2"> <b> Mission: </b> </div> 
+ <div class="col-md-10 mission"> </div>
+</div>
+ </div> 
+
+        </div>
+         </div>
+      </div>
+    </div> 

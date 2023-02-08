@@ -1,0 +1,221 @@
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Update Maps</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+ 
+      <!-- /.panel-heading -->
+       <div class="well">
+         <button id="updcts" class="btn btn-lg btn-success">Update Surgeons Data</button>
+          <div style="display:inline-block; width:30px;"><i id="updctsi"></i> </div>
+        <div style="display:inline-block;">Update number of surgeons per city and district</div>
+       </div>
+        <div class="well">
+         <button id="updgdr" class="btn btn-lg btn-success">Update Gender Data</button>
+           <div style="display:inline-block; width:30px;"><i id="updgdri"></i> </div>
+        <div style="display:inline-block;">Update gender of surgeons per city and district</div>
+       </div>
+      <!-- /.panel-body -->
+    </div>
+    
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<style type="text/css">
+  
+.green { color:#1d9e74; font-size: 22px; padding-right:6px; }
+ .red {  color:#912b00; font-size: 22px; padding-right:6px; }
+
+</style>
+<script type="text/javascript">
+$(document).ready(function() {
+
+ $('#updgdr').on('click', function() {updgdr()})
+ $('#updcts').on('click', function() {updcts()})
+
+
+function updgdr() {
+   $('#updgdri').addClass('fa fa-spinner  fa-fw fa-spin')
+
+   $.ajax( {
+    type :"GET", 
+    async :true, 
+    url : '/bygender',
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+   
+    success: function(data) {  
+          if (data.message == 'ok') {
+             $('#updgdri').removeClass('fa-spinner fa-spin')
+            $('#updgdri').addClass('fa fa-check fa-fw green')
+            }
+          else 
+
+         {  
+             $('#updgdri').removeClass('fa-spinner fa-spin')
+           $('#updgdri').toggleClass('fa fa-times fa-fw red')
+             console.log('bygender not ok')
+            }
+               },
+    error: function(error) {
+                console.log('bygender not ok')
+         {    
+             $('#updgdri').removeClass('fa-spinner fa-spin')
+            $('#updgdri').toggleClass('fa fa-times fa-fw red')
+
+                }
+        }  
+ 
+});
+
+
+   $.ajax( {
+    type :"GET", 
+    async :true, 
+    url : '/genderbydistrict',
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+   
+    success: function(data) {  
+          if (data.message == 'ok') {
+             $('#updgdri').removeClass('fa-spinner fa-spin')
+            $('#updgdri').addClass('fa fa-check fa-fw green')
+            }
+          else 
+
+         {  
+             $('#updgdri').removeClass('fa-spinner fa-spin')
+           $('#updgdri').toggleClass('fa fa-times fa-fw red')
+             console.log('bygender not ok')
+            }
+               },
+    error: function(error) {
+                console.log('bygender not ok')
+         {    
+             $('#updgdri').removeClass('fa-spinner fa-spin')
+            $('#updgdri').toggleClass('fa fa-times fa-fw red')
+
+                }
+        }  
+ 
+});   
+ }
+
+ function updcts() {
+   $('#updctsi').addClass('fa fa-spinner fa-spin  fa-fw')
+   
+   $.ajax( {
+    type :"GET", 
+    async :true, 
+    url : '/specialtybydistrict',
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+   
+    success: function(data) {  
+          if (data.length > 2) {
+            
+            rd();
+            }
+          else 
+         {    
+             $('#updctsi').removeClass('fa-spinner fa-spin')      
+             $('#updctsi').addClass('fa fa-times fa-fw red')
+             console.log('specialtybydistrict not ok')
+            }
+               },
+    error: function(error) {
+                console.log('specialtybydistrict not ok');  
+             $('#updctsi').removeClass('fa-spinner fa-spin');
+               $('#updctsi').addClass('fa fa-times fa-fw red');
+
+                 
+        }  
+ 
+});
+ }
+//refreshdistricts
+function rd() { 
+  $.ajax( {
+    type :"GET", 
+    async :true, 
+    url : '/refreshdistricts',
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+   
+    success: function(data) {  
+          if (data.message== 'ok' ) {
+            
+             geojson();
+            }
+          else 
+         {   
+
+             $('#updctsi').removeClass('fa-spinner fa-spin');
+            $('#updctsi').addClass('fa fa-times fa-fw red');
+             console.log('refreshdistricts not ok');
+            }
+               },
+    error: function(error) {
+                console.log('refreshdistricts not ok');
+             
+
+             $('#updctsi').removeClass('fa-spinner fa-spin');
+           $('#updctsi').addClass('fa fa-times fa-fw red');
+
+                 
+        }  
+ 
+});
+
+}
+//geojson
+function geojson() { 
+  
+  $.ajax( {
+    type :"GET", 
+    async :true, 
+    url : '/geojson',
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+   
+    success: function(data) {  
+        
+          if (data.type =  'featurecollection') {
+             $('#updctsi').removeClass('fa-spinner fa-spin');
+            $('#updctsi').addClass('fa fa-check fa-fw green');
+             console.log('geojson  ok');
+
+            }
+          else 
+            
+         {   
+           $('#updctsi').removeClass('fa-spinner fa-spin');
+            $('#updctsi').addClass('fa fa-times fa-fw red');
+             console.log('geojson not ok');
+            }
+               },
+    error: function(error) {
+                console.log('geojson not ok');
+             
+                $('#updctsi').removeClass('fa-spinner fa-spin');
+                $('#updctsi').addClass('fa fa-times fa-fw red');
+
+                 
+        }  
+ 
+});
+
+}
+
+});
+
+</script>

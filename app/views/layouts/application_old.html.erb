@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Surgeon Tracker</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+
+  <%= csrf_meta_tags %>
+
+</head>
+<body data-no-turbolink>
+
+<style type="text/css">
+ html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrapper {
+    min-height: 100%;
+    height: auto;
+    /* Negative indent footer by its height */
+    margin: 0 auto -90px;
+    /* Pad bottom by footer height */
+    padding: 0 0 90px;
+    background-color: #ffffff;
+        }
+
+ #footer-links a {  color:#ffffff ;
+                        /* #fec823 */ 
+                    margin-right: 1vw;
+                    font-size: 1.5vw;
+                    text-decoration: none;
+                     }
+ #footer-links a:hover {  color: #fec823; } 
+
+  html {  background-color: #ffffff;  }
+.navbar  { 
+       background-color: #CB4133;
+       color: #ffffff;
+ }
+ .navbar .navbar-header a { 
+      color: #ffffff;
+ }
+ .navbar .navbar-header a:hover { 
+      color: #fec823;
+ }
+ .leaflet-top { 
+    padding-top:70px;
+  }
+  .dropdown-menu li a {   color: #ffffff;}
+   .dropdown-menu li a:hover {   color: #fec823;}
+    .dropdown-toggle i {   color: #ffffff;}
+   .dropdown-toggle:hover i {   color: #fec823;}
+
+      #footer {
+        font-family: 'HelveticaNeueLTStd';
+        background-color: #1d1d1d;
+        color:#fff;
+        min-height:90px;
+      }
+
+       .header-name {
+        font-family: 'HelveticaNeueLTStd';
+        display: inline-block;
+        font-size: 24px;
+        color:#fff;
+      }
+
+      .logo { 
+        display:inline-block;
+
+      }
+      .header-logos {   
+        display: inline-block;
+        margin-bottom: 8px;
+        margin-left: 10px;
+
+      }
+
+      .checkboxescontainer { 
+
+      min-height: 90px;
+
+
+      }
+
+</style>
+
+  <div id="wrapper">
+  <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="header-logos"> 
+         <div class="logo"> <a href="https://www.rcsi.ie/"> <img src="images/rcsi.png" style="max-height:80px;" /> </a></div>
+         <div class="logo"> <a href="http://www.cosecsa.org/"> <img src="images/COSECSA.png" style="max-width:80px;" /> </a>  </div>
+         <div class="logo"><a href="http://www.essentialsurgery.com/"> <img src="images/ices.png" style="max-width:80px; margin-top:6px;" /> </a></div>
+        </div> 
+         <span class="header-name">Surgeon Tracker</span>
+         
+      </div>
+      
+      <!-- /.navbar-header -->
+     
+      <ul class="nav navbar-top-links navbar-right">
+        <li class="dropdown"  style="background-color: #CB4133;">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+            <i class="fa fa-user fa-fw" ></i>  <i class="fa fa-caret-down"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-user" style="background-color: #CB4133; color:#ffffff">
+            <% if current_user && current_user.doctor? %>
+              <li><%= link_to '<i class="fa fa-user fa-fw"></i> User Profile'.html_safe, edit_doctor_path(current_user.doctor.id) %></li>
+              <li class="divider"></li>
+            <% end %>
+            <% if user_signed_in? %>
+            <li><%= link_to '<i class="fa fa-sign-out fa-fw"></i> Sign out'.html_safe, destroy_user_session_path, :method => :delete %></li>
+            <% else %>
+            <li><%= link_to '<i class="fa fa-sign-out fa-fw"></i> Log in'.html_safe, new_user_session_path, :method => :get %></li>
+            <% end %>
+          </li>
+        </ul>
+        <!-- /.dropdown-user -->
+      </li>
+      <!-- /.dropdown -->
+    </ul>
+    <!-- /.navbar-top-links -->
+
+  </nav>
+   <%= yield %>
+</div>
+<!-- /#page-wrapper -->
+
+
+
+</div>
+    <div id="footer" align="left">
+    <div class="left">
+      <div class="container" align="left" >
+        <p id="footer-links" style="margin-top:5px;"> 
+        <a href="/privacy">Privacy</a>
+        <a href="/contact">Contact us</a>
+        <a href="/about">About </a>
+        </p>
+      </div>
+      <div class="checkboxes col-md-12 col-sm-12 col-xs-12 nopadding" class="left">
+      <div class="col-md-2  col-sm-2 col-xs-2 nopadding">
+      <div class="col-md-1 col-sm-1">
+       <input id="general" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="general">General</label>
+      </div>
+      <div class="col-md-1 col-sm-1">
+       <input id="plastic" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="plastic">Plastic</label>
+      </div>
+      <div class="col-md-1 col-sm-1">
+       <input id="pediatrics" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="pediatrics">Pediatrics</label>
+      </div>
+
+       </div>
+
+
+      <div class="col-md-2 col-sm-2 col-xs-2 nopadding">
+      <div class="col-md-1 col-sm-1">
+       <input id="orthopaedics" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="orthopaedics">Orthopaedics</label>
+      </div>
+      <div class="col-md-1 col-sm-1">
+       <input id="ENT" checked name="stoggle" type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="ENT">ENT</label>
+      </div>
+      <div class="col-md-1 col-sm-1">
+       <input id="colorectal" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="colorectal">Colorectal</label>
+      </div>
+
+       </div>
+
+      <div class="col-md-2 col-sm-2 col-xs-2 nopadding">
+      <div class="col-md-1 col-sm-1">
+       <input id="ophtalmic" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="ophtalmic">Ophtalmic</label>
+      </div>
+      <div class="col-md-1 col-sm-1">
+       <input id="neurosurgery" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="neurosurgery">Neurosurgery</label>
+      </div>
+      <div class="col-md-1 col-sm-1">
+       <input id="urology" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="urology">Urology</label>
+      </div>
+       </div>
+
+      <div class="col-md-2 col-sm-2 col-xs-2 nopadding">
+      <div class="col-md-1 col-sm-1">
+       <input id="cardiothoracic" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="cardiothoracic">Cardio Thoracic</label>
+      </div>
+      <div class="col-md-1 col-sm-1">
+       <input id="cardiovascular" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="cardiovascular">Cardiovascular</label>
+      </div>
+      <div class="col-md-1 col-sm-1">
+       <input id="oralandmaxillofacial" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="oralandmaxillofacial">Oral</label>
+      </div>
+       </div>
+
+      <div class="col-md-2 col-sm-2 col-xs-2 nopadding">
+      <div class="col-md-1 col-sm-1">
+       <input id="obgyn" name="stoggle" checked type="checkbox">
+       </div>
+       <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="obgyn">OB/GYN</label>
+      </div>
+      <div class="col-md-1 col-sm-1">
+       <input id="unknown" name="stoggle" checked type="checkbox">
+       </div>
+      <div class="col-md-10 col-sm-10 col-xs-10">
+      <label class="hover" for="unknown">Unknown</label>
+      </div>
+       </div>
+      </div>
+        </div>
+
+    </div>
+<!-- <div id="page-wrapper"> -->
+  <% if flash[:notice] %>
+    <div class="alert alert-success">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+  <% if flash[:alert] %>
+    <div class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <% flash[:alert] %>
+    </div>
+  <% end %>
+<!-- </div> -->
+<!-- /#page-wrapper -->
+
+      <script type="text/javascript">
+  $(document).ready(function(){
+
+
+  $("[name='stoggle']").iCheck({
+    checkboxClass: 'icheckbox_flat-red',
+    radioClass: 'iradio_flat-red'
+  });
+
+   $("[name='stoggle']").on('ifChanged', function(event){
+   
+   if(zoom > 0 && zoom <=5) { 
+        totalDocsPerCountry()
+   
+   }
+}); 
+});  
+      </script>
+
+  
+</body>
+</html>
