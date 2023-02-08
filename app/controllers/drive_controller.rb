@@ -16,22 +16,22 @@ session = GoogleDrive.saved_session("google_drive.json")
 
 
 if table== 'organisations' then
-sheet = session.spreadsheet_by_key("1EPLYBDY5lxXVqRr9EbxtUHjk-iinelAi6ZGwN1Qv0cs").worksheets[1]
+sheet = session.spreadsheet_by_key( ENV['GD_ORGANISATIONS_TABLE_ID']).worksheets[1]
 elsif table== 'cities' then
 	
-sheet = session.spreadsheet_by_key("1EPLYBDY5lxXVqRr9EbxtUHjk-iinelAi6ZGwN1Qv0cs").worksheets[5]
+sheet = session.spreadsheet_by_key(  ENV['GD_CITIES_TABLE_ID'] ).worksheets[5]
 elsif table== 'countries' then
 	
-sheet = session.spreadsheet_by_key("1EPLYBDY5lxXVqRr9EbxtUHjk-iinelAi6ZGwN1Qv0cs").worksheets[3]
+sheet = session.spreadsheet_by_key(  ENV['GD_COUNTIRES_TABLE_ID']  ).worksheets[3]
 elsif table== 'specialties' then
 	
-sheet = session.spreadsheet_by_key("1EPLYBDY5lxXVqRr9EbxtUHjk-iinelAi6ZGwN1Qv0cs").worksheets[2]
+sheet = session.spreadsheet_by_key(  ENV['GD_SPECIALTIES_TABLE_ID']  ).worksheets[2]
 elsif table== 'doctors' then
 	
-sheet = session.spreadsheet_by_key("1EPLYBDY5lxXVqRr9EbxtUHjk-iinelAi6ZGwN1Qv0cs").worksheets[0]
+sheet = session.spreadsheet_by_key(  ENV['GD_DOCTORS_TABLE_ID']  ).worksheets[0]
 elsif table== 'districts' then
 	
-sheet = session.spreadsheet_by_key("1EPLYBDY5lxXVqRr9EbxtUHjk-iinelAi6ZGwN1Qv0cs").worksheets[4]
+sheet = session.spreadsheet_by_key(  ENV['GD_DISTRICTS_TABLE_ID']  ).worksheets[4]
 end
 
 return sheet;
